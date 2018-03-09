@@ -2,13 +2,6 @@
 ;; My own settings
 ;; This file is meant to be portable across OS'es, ideally even within a terminal
 
-(add-to-list 'load-path "~/.emacs.d/elisp")
-(add-to-list 'load-path "~/.emacs.d/elpa")
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-
 
 ;; --------------------------------------------------------------------------------
 ;; IVY completion
@@ -429,6 +422,10 @@ _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ De
 (show-paren-mode 1)                 ;; Highlight matching parentheses
 (setq split-height-threshold 30)
 (setq split-width-threshold 100)
+
+;; Pallet to maintain entries in ~/.emacs.d/Cask automatically
+(require 'pallet)
+(pallet-mode t)
 
 ;; Multiple cursor stuff
 (require 'multiple-cursors)

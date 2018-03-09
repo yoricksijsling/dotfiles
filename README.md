@@ -13,6 +13,7 @@ Shared config:
 
 ```bash
 ln -s ~/dotfiles/emacs.d/yorick.el ~/.emacs.d/yorick.el
+ln -s ~/dotfiles/emacs.d/.mc-lists.el ~/.emacs.d/.mc-lists.el
 ```
 
 Not committing `~/.emacs.d/init.el` because i put location-dependent and potentially confidential

@@ -30,11 +30,17 @@ I'm not committing `~/.emacs.d/init.el` because i put location-dependent and pot
 confidential stuff in there. Start out with something like this:
 
 ```elisp
-(package-initialize)
-(load "~/.emacs.d/yorick.el")
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
 
 ;; We use cask, so prevent package.el from adding the following line:
 ;; (package-initialize)
+
+;; Use custom versions of these packages
+(add-to-list 'load-path "~/opensource/emacs-purpose")
+(add-to-list 'load-path "~/opensource/haskell-mode")
+
+(load "~/.emacs.d/yorick.el")
 
 (setq-default fill-column 100)
 

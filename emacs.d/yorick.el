@@ -56,7 +56,7 @@
 ;; --------------------------------------------------------------------------------
 ;;   Haskell
 
-(require 'haskell)
+(require 'haskell)   ;; Custom version, see init.el
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
@@ -303,8 +303,7 @@ If the region is unset, the current declaration will be used."
 ;; --------------------------------------------------------------------------------
 ;; Purpose
 
-(add-to-list 'load-path "~/opensource/emacs-purpose")  ;; Use custom version of package
-(require 'window-purpose)
+(require 'window-purpose)   ;; Custom version, see init.el
 (purpose-mode)
 
 ;; All magit windows have different magit purposes. This way magit is allowed to pop buffers (for

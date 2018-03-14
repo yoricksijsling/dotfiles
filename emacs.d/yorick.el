@@ -71,7 +71,7 @@
 ;; (setq haskell-process-suggest-hoogle-imports t)
 (setq haskell-tags-on-save t)
 (setq haskell-process-args-stack-ghci
-      '("--ghci-options=-ferror-spans" ;; -ddump-splices -ddump-to-file"
+      '("--ghci-options=-ferror-spans -fshow-loaded-modules" ;; -ddump-splices -ddump-to-file"
         "--bench" "--test" ;; Include load paths for testing and benchmark packages
         ;; Default included no-build, but i want to build all my stuff
         ;; Default included no-load, but i want all modules to be loaded??

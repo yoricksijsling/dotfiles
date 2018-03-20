@@ -9,9 +9,10 @@
 (depends-on "counsel")
 (depends-on "counsel-projectile")
 (depends-on "dash")
+(depends-on "ein")
 (depends-on "elpy")
 (depends-on "ensime")
-(depends-on "epl");
+(depends-on "epl")
 (depends-on "f")
 (depends-on "find-file-in-project")
 (depends-on "flycheck")

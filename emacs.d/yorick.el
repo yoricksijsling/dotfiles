@@ -60,11 +60,18 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
+;; Interactive-haskell-mode is the mode in the haskell file buffer
 (define-key interactive-haskell-mode-map (kbd "C-c C-s") 'my-hoogle)
 (define-key interactive-haskell-mode-map (kbd "C-c C-d") 'my-eval-decl)
 (define-key interactive-haskell-mode-map (kbd "C-c C-f") 'my-partial-load)
 
-(add-hook 'interactive-haskell-mode-hook 'goto-address-mode)
+;; Haskell-interactive-mode is the mode in the ghci buffer
+(add-hook 'haskell-interactive-mode-hook 'init-ghci)
+(defun init-ghci ()
+  "Run this within the Interactive-Haskell buffer to initialise"
+  (goto-address-mode t)
+  (make-local-variable 'scroll-conservatively)
+  (setq scroll-conservatively 100))
 
 (setq haskell-align-imports-pad-after-name t)
 (setq haskell-process-suggest-remove-import-lines nil)

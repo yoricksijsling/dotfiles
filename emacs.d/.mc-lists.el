@@ -16,6 +16,11 @@
         kill-region
         markdown-outdent-or-delete
         my-eval-decl
+        org-beginning-of-line
+        org-end-of-line
+        org-force-self-insert
+        org-self-insert-command
+        org-yank
         sh-assignment
         undefined
         ))

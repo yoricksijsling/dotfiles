@@ -351,14 +351,16 @@ If the region is unset, the current declaration will be used."
 (defhydra hydra-window (:hint nil)
   "
 _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ Dedicate to purpose/buffer
-^^^^^^      _z_ Undo      _2_ Split below     _{_/_}_ Horiz resize    _k_ Kill buffer
-^^^^^^      _Z_ Redo      _3_ Split right     ^^^^                    _q_/_SPC_/_RET_ Quit
+^^^^^^      _z_ Undo      _1_ Delete others   _{_/_}_ Horiz resize    _k_ Kill buffer
+^^^^^^      _Z_ Redo      _2_ Split below     ^^^^                    _q_/_SPC_/_RET_ Quit
+^^^^^^      ^^            _3_ Split right
 "
    ("b" windmove-left )
    ("n" windmove-down )
    ("p" windmove-up )
    ("f" windmove-right )
    ("0" delete-window)
+   ("1" delete-other-windows)
    ("2" split-window-below)
    ("3" split-window-right)
    ("+" enlarge-window)

@@ -353,8 +353,26 @@ If the region is unset, the current declaration will be used."
              '("." nil (reusable-frames . t))) ;; Because display-buffer-reuse-frames is obsolete
 (add-hook 'next-error-hook 'raise-frame) ;; next-error will select the right window, but may have raised another frame due to reusable-frames.
 
+
+
+;; --------------------------------------------------------------------------------
+;; Hydra
+
 (require 'hydra)
-(global-set-key (kbd "C-c w") 'hydra-window/body)
+
+(global-set-key (kbd "M-h") 'hydra-hydra/body)
+(defhydra hydra-hydra (:hint nil :exit t)
+  "
+_w_indow
+_s_merge %`smerge-mode
+_q_uit
+"
+  ("s" hydra-smerge/body)
+  ("w" hydra-window/body)
+  ("q" nil)
+  )
+
+;; (global-set-key (kbd "C-c w") 'hydra-window/body)
 (defhydra hydra-window (:hint nil)
   "
 _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ Dedicate to purpose/buffer
@@ -389,6 +407,32 @@ _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ De
    ("RET" nil)
    )
 
+(defhydra hydra-smerge (:hint nil :pre (smerge-mode 1))
+  "
+^Move^ ^Keep^ ^Diff^ ^Pair^
+------------------------------------------------------
+_n_ext _b_ase _R_efine _<_: base-mine
+_p_rev _m_ine _E_diff _=_: mine-other
+^ ^ _o_ther _C_ombine _>_: base-other
+^ ^ _a_ll _r_esolve
+_q_uit _RET_: current
+"
+    ("RET" smerge-keep-current)
+    ("C" smerge-combine-with-next)
+    ("E" smerge-ediff)
+    ("R" smerge-refine)
+    ("a" smerge-keep-all)
+    ("b" smerge-keep-base)
+    ("m" smerge-keep-mine)
+    ("n" smerge-next)
+    ("o" smerge-keep-other)
+    ("p" smerge-prev)
+    ("r" smerge-resolve)
+    ("<" smerge-diff-base-mine)
+    ("=" smerge-diff-mine-other)
+    (">" smerge-diff-base-other)
+    ("q" nil :color blue)
+    )
 
 ;; --------------------------------------------------------------------------------
 ;; Misc

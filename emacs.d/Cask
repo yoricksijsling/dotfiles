@@ -16,7 +16,6 @@
 (depends-on "f")
 (depends-on "find-file-in-project")
 (depends-on "flycheck")
-(depends-on "framemove" :git "https://github.com/emacsmirror/framemove.git")
 (depends-on "ghub")
 (depends-on "git-commit")
 (depends-on "github-browse-file")

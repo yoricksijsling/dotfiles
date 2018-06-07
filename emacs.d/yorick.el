@@ -91,7 +91,7 @@
 If prefix argument INFO is given, then hoogle is asked to show
 extra info for the items matching QUERY.
 
-Use `stack hoogle --rebuild --test --bench` to generate the database.
+Use `stack hoogle --rebuild --test --bench --no-run-tests --no-run-benchmarks` to generate the database.
 "
   (interactive
    (let ((def (haskell-ident-at-point)))

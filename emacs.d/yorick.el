@@ -360,7 +360,7 @@ If the region is unset, the current declaration will be used."
 
 (require 'hydra)
 
-(global-set-key (kbd "M-h") 'hydra-hydra/body)
+(global-set-key (kbd "C-`") 'hydra-hydra/body)
 (defhydra hydra-hydra (:hint nil :exit t)
   "
 _w_indow
@@ -368,11 +368,12 @@ _s_merge %`smerge-mode
 _q_uit
 "
   ("s" hydra-smerge/body)
+  ("C-s" hydra-smerge/body)
   ("w" hydra-window/body)
+  ("C-w" hydra-window/body)
   ("q" nil)
   )
 
-;; (global-set-key (kbd "C-c w") 'hydra-window/body)
 (defhydra hydra-window (:hint nil)
   "
 _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ Dedicate to purpose/buffer

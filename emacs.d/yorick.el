@@ -386,6 +386,10 @@ ag."
 (global-set-key (kbd "C-M-f") 'windmove-right)
 (global-set-key (kbd "C-M-p") 'windmove-up)
 (global-set-key (kbd "C-M-n") 'windmove-down)
+(global-set-key (kbd "S-b") 'windmove-left)
+(global-set-key (kbd "S-f") 'windmove-right)
+(global-set-key (kbd "S-p") 'windmove-up)
+(global-set-key (kbd "S-n") 'windmove-down)
 
 ;; Navigate frames
 (require 'cl)

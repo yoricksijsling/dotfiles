@@ -59,6 +59,8 @@
 (require 'haskell)   ;; Custom version, see init.el
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(require 'company)
+(add-hook 'haskell-mode-hook 'company-mode)
 
 ;; Interactive-haskell-mode is the mode in the haskell file buffer
 (define-key interactive-haskell-mode-map (kbd "C-c C-s") 'my-hoogle)
@@ -276,6 +278,47 @@ If the region is unset, the current declaration will be used."
                      response
                      )))))
     ))
+
+(defun company-haskell-imports (command &optional arg &rest ignored)
+  "Company mode completions for imports"
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-haskell-imports))
+    (prefix (and (derived-mode-p 'haskell-mode)
+                 (company-grab-line "import....*")))
+    (candidates (search-haskell-imports arg))
+    (no-cache t)
+    ))
+(add-to-list 'company-backends 'company-haskell-imports)
+
+(defun search-haskell-imports (arg)
+  "Return suggestions by searching through the imports in all
+haskell files throughout the project. Depends on projectile and
+ag."
+  (let* ((ignored (mapconcat (lambda (i)
+                               (concat "--ignore "
+                                       (shell-quote-argument i)
+                                       " "))
+                             (append (projectile-ignored-files-rel)
+                                     (projectile-ignored-directories-rel))
+                             ""))
+         (command (format counsel-ag-base-command ;; Reuse counsel config
+                          (concat ignored
+                                  " --nofilename"
+                                  " --nobreak"
+                                  " --ignore-case"
+                                  " --file-search-regex .*hs$"
+                                  " -- ")))
+         (regex (concat "^import .*"
+                        (s-join ".*" (-map (lambda (w)
+                                             (concat "\\b" w)
+                                             )
+                                           (cdr (split-string arg))))))
+         (command-list (append (split-string command) (list regex)))
+         (result (let ((default-directory (projectile-project-root)))
+                   (apply 'process-lines command-list)))
+         )
+    (cl-remove-duplicates result :test 'equal)))
 
 
 ;; --------------------------------------------------------------------------------

@@ -395,8 +395,8 @@ ag."
 
 ;; Navigate frames
 (require 'cl)
-(require 'framemove)
-(setq framemove-hook-into-windmove t)
+;; (require 'framemove)   ;; Disabled framemove for i3
+;; (setq framemove-hook-into-windmove t)
 ;; (setq display-buffer-reuse-frames t)
 (add-to-list 'display-buffer-alist
              '("." nil (reusable-frames . t))) ;; Because display-buffer-reuse-frames is obsolete

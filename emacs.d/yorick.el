@@ -381,6 +381,8 @@ ag."
 
 (winner-mode)
 
+(menu-bar-mode 0)
+
 ;; Navigate buffers
 (global-set-key (kbd "C-M-b") 'windmove-left)
 (global-set-key (kbd "C-M-f") 'windmove-right)

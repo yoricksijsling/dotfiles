@@ -622,6 +622,7 @@ _q_uit _RET_: current
 (assq-delete-all 'projectile-mode minor-mode-alist)
 (assq-delete-all 'interactive-haskell-mode minor-mode-alist)
 (assq-delete-all 'auto-revert-mode minor-mode-alist)
+(assq-delete-all 'which-key-mode minor-mode-alist)
 
 
 ;; --------------------------------------------------------------------------------

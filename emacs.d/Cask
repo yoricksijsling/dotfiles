@@ -51,6 +51,7 @@
 (depends-on "virtualenvwrapper")
 (depends-on "web-mode")
 (depends-on "wgrep")
+(depends-on "which-key")
 (depends-on "window-purpose")
 (depends-on "with-editor")
 (depends-on "yaml-mode")

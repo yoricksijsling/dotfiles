@@ -327,7 +327,7 @@ ag."
 ;; Python projects
 (elpy-enable)
 
-(setq venv-dirlookup-names '("ansible-venv" "requestmachine-venv" ".venv" "venv"))
+(setq venv-dirlookup-names '("ansible-venv" "requestmachine-venv" "sharkmachine-venv" ".venv" "venv"))
 (setq elpy-rpc-backend "jedi")
 
 (setq pyvenv-mode nil)

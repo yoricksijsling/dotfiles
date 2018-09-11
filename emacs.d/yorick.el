@@ -285,7 +285,7 @@ If the region is unset, the current declaration will be used."
   (cl-case command
     (interactive (company-begin-backend 'company-haskell-imports))
     (prefix (and (derived-mode-p 'haskell-mode)
-                 (company-grab-line "import....*")))
+                 (company-grab-line "^import....*")))
     (candidates (search-haskell-imports arg))
     (no-cache t)
     ))

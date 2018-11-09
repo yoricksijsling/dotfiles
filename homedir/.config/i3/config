@@ -44,20 +44,12 @@ bindsym $mod+b exec /home/yorick/dotfiles/i3-navigate-emacs.sh left
 bindsym $mod+n exec /home/yorick/dotfiles/i3-navigate-emacs.sh down
 bindsym $mod+p exec /home/yorick/dotfiles/i3-navigate-emacs.sh up
 bindsym $mod+f exec /home/yorick/dotfiles/i3-navigate-emacs.sh right
-bindsym Control+Mod1+b exec /home/yorick/dotfiles/i3-navigate-emacs.sh left
-bindsym Control+Mod1+n exec /home/yorick/dotfiles/i3-navigate-emacs.sh down
-bindsym Control+Mod1+p exec /home/yorick/dotfiles/i3-navigate-emacs.sh up
-bindsym Control+Mod1+f exec /home/yorick/dotfiles/i3-navigate-emacs.sh right
 
 # move focused window
 bindsym $mod+Shift+b move left
 bindsym $mod+Shift+n move down
 bindsym $mod+Shift+p move up
 bindsym $mod+Shift+f move right
-bindsym Control+Mod1+Shift+b move left
-bindsym Control+Mod1+Shift+n move down
-bindsym Control+Mod1+Shift+p move up
-bindsym Control+Mod1+Shift+f move right
 
 # split direction
 bindsym $mod+h split h

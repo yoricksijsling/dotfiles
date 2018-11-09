@@ -375,6 +375,7 @@ ag."
 
 (add-to-list 'purpose-user-mode-purposes '(haskell-interactive-mode . repl))
 (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . repl))
+(add-to-list 'purpose-user-mode-purposes '(ein:notebook-multilang-mode . repl))
 
 (purpose-compile-user-configuration)
 

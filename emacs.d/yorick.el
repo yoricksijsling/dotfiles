@@ -326,11 +326,16 @@ ag."
 
 ;; Python projects
 (elpy-enable)
+(add-hook 'elpy-mode-hook 'flycheck-mode)
+(setq elpy-rpc-backend "jedi")
+(setq pyvenv-mode nil)
 
 (setq venv-dirlookup-names '("ansible-venv" "requestmachine-venv" "sharkmachine-venv" ".venv" "venv"))
-(setq elpy-rpc-backend "jedi")
+(setq venv-shorter-names '(("requestmachine-venv" "rm")
+                           ("sharkmachine-venv" "shm")
+                           ("ansible-venv" "ansible")
+                           ))
 
-(setq pyvenv-mode nil)
 (defun my-venv-projectile-auto-workon ()
   (interactive)
   (let* ((projectile-require-project-root nil) ;; So projectile-project-root doesn't err
@@ -342,6 +347,14 @@ ag."
         (pyvenv-activate path)
       (pyvenv-deactivate)
       )))
+
+(defun my-shorten-venv-name (venv-name)
+  "Find the shorter name for the given venv nam. May return nil."
+  (cadr (--first (string-equal (car it) venv-name) venv-shorter-names)))
+
+(defadvice pyvenv-activate (after venv-name-shorten activate)
+ (setq pyvenv-virtual-env-name
+       (or (my-shorten-venv-name pyvenv-virtual-env-name) pyvenv-virtual-env-name)))
 
 ;; Powerline figured out how to detect buffer/window focus pretty
 ;; reliably, so we reuse that to detect which venv we should switch
@@ -605,14 +618,14 @@ _q_uit _RET_: current
          mode-line-frame-identification
          mode-line-buffer-identification
          sml/pos-id-separator
-         mode-line-position
+         ;; mode-line-position
          ;; (vc-mode vc-mode)
-         sml/pre-modes-separator
-         mode-line-modes
-         mode-line-misc-info
-         mode-line-end-spaces
+         ;; sml/pre-modes-separator
+         mode-line-modes       ;; Major mode and minor modes
+         mode-line-misc-info   ;; Would normally includes venv
          (:eval (when (eq (selected-window) my-real-selected-window)
                   pyvenv-virtual-env-name))
+         mode-line-end-spaces
          )))
 
 ;; These minor modes do not have to be shown in mode line
@@ -623,6 +636,7 @@ _q_uit _RET_: current
 (assq-delete-all 'interactive-haskell-mode minor-mode-alist)
 (assq-delete-all 'auto-revert-mode minor-mode-alist)
 (assq-delete-all 'which-key-mode minor-mode-alist)
+(assq-delete-all 'highlight-indentation-mode minor-mode-alist)
 
 
 ;; --------------------------------------------------------------------------------

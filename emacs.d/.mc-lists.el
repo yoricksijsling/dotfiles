@@ -4,14 +4,17 @@
 (setq mc/cmds-to-run-for-all
       '(
         Buffer-menu-delete
+        abbrev-prefix-mark
         beginning-of-line-or-indentation
         dabbrev-expand
+        downcase-region
         duplicate-line-or-region
         electric-newline-and-maybe-indent
         fill-paragraph
         haskell-indentation-common-electric-command
         haskell-process-load-file
         indent-for-tab-command
+        indent-rigidly-left
         intero-repl-eval-decl
         kill-region
         markdown-outdent-or-delete
@@ -19,10 +22,12 @@
         org-beginning-of-line
         org-end-of-line
         org-force-self-insert
+        org-return-indent
         org-self-insert-command
         org-yank
         sh-assignment
         undefined
+        upcase-region
         ))
 
 (setq mc/cmds-to-run-once
@@ -30,10 +35,14 @@
         ahs-forward
         artist-previous-line
         counsel-M-x
+        counsel-locate
+        counsel-projectile-ag
+        dired
         eval-print-last-sexp
         handle-switch-frame
         indent-rigidly
         ivy-end-of-buffer
+        list-directory
         swiper-mc
         wgrep-finish-edit
         ))

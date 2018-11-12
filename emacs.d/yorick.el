@@ -28,6 +28,7 @@
 ;; (projectile-global-mode +1) ;; Replaced by counsel-projectile-mode
 (setq projectile-show-paths-function 'projectile-hashify-with-relative-paths)
 (setq projectile-completion-system 'ivy)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (require 'counsel-projectile)
 (counsel-projectile-mode)

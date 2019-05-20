@@ -1,3 +1,4 @@
 # ln -s ~/dotfiles/homedir/.xsessionrc ~/.xsessionrc
 
 setxkbmap -option caps:super
+xset s 300

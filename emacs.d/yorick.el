@@ -518,6 +518,9 @@ _q_uit _RET_: current
       kept-old-versions 2
       version-control t)
 
+;; Svg can crash emacs image-mode, and I prefer them in text anyways
+(setq auto-mode-alist (remove '("\\.svgz?\\'" . image-mode) auto-mode-alist))
+
 ;; Smaller steps for text-scale-adjust
 (setq-default text-scale-mode-step 1.04)
 

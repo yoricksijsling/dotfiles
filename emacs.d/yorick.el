@@ -4,6 +4,21 @@
 
 
 ;; --------------------------------------------------------------------------------
+;; Customize
+
+;; Changing these faces via customize still works, but it will duplicate all the
+;; settings to init.el. After a change, copy the entire `custom-set-faces` call
+;; from init.el to here.
+(custom-set-faces
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "#222" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
+ '(fixed-pitch ((t (:family "Ubuntu Mono"))))
+ '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "grey50"))))
+ '(markdown-code-face ((t (:inherit fixed-pitch :background "gray96" :height 1.1))))
+ '(markdown-header-face ((t (:foreground "medium blue" :weight bold))))
+ '(variable-pitch ((t (:height 0.9 :family "Comic Sans MS")))))
+
+
+;; --------------------------------------------------------------------------------
 ;; IVY completion
 
 (require 'ivy)
@@ -49,9 +64,6 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (setq magit-bury-buffer-function 'magit-mode-quit-window) ;; Default was 'magit-restore-window-configuration
 ;; (setq magit-bury-buffer-function 'magit-restore-window-configuration) ;; Default was 'magit-restore-window-configuration
-
-(custom-set-faces
- '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "grey50")))))
 
 
 ;; --------------------------------------------------------------------------------
@@ -559,6 +571,16 @@ _q_uit _RET_: current
 (global-set-key (kbd "C-s") 'phi-search)
 (global-set-key (kbd "C-r") 'phi-search-backward)
 (setq phi-search-case-sensitive  'guess)
+
+;; Markdown
+(require 'markdown-mode)
+(setq markdown-gfm-use-electric-backquote nil)
+(setq markdown-fontify-code-blocks-natively t)
+(add-to-list 'auto-mode-alist '("\\.md\\'"       . gfm-mode)) ;; github-flavoured-markdown
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode)) ;; github-flavoured-markdown
+(add-hook 'gfm-mode-hook 'variable-pitch-mode) ;; Proportional font
+(setq markdown-header-scaling t)
+(setq markdown-header-scaling-values '(2.0 1.5 1.25 1.0 1.0 1.0))
 
 ;; Auto highlight
 (setq auto-highlight-symbol-mode-map

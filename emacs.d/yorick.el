@@ -342,6 +342,9 @@ ag."
 (add-hook 'elpy-mode-hook 'flycheck-mode)
 (setq elpy-rpc-backend "jedi")
 (setq pyvenv-mode nil)
+;; https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
+(setq python-shell-interpreter "ipython")
+(setq python-shell-interpreter-args "-i --simple-prompt")
 
 (setq venv-dirlookup-names '("ansible-venv" "requestmachine-venv" "sharkmachine-venv" ".venv" "venv"))
 (setq venv-shorter-names '(("requestmachine-venv" "rm")

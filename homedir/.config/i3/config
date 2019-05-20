@@ -86,6 +86,7 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
+workspace_auto_back_and_forth yes  # Switch back to previous workspace when switching to current
 
 # scroll to move through workspaces
 bindsym --whole-window $mod+button4 workspace next_on_output

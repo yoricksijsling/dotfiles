@@ -5,6 +5,7 @@
       '(
         Buffer-menu-delete
         abbrev-prefix-mark
+        beginning-of-buffer
         beginning-of-line-or-indentation
         dabbrev-expand
         downcase-region
@@ -12,11 +13,13 @@
         electric-newline-and-maybe-indent
         fill-paragraph
         haskell-indentation-common-electric-command
+        haskell-interactive-mode-space
         haskell-process-load-file
         indent-for-tab-command
         indent-rigidly-left
         intero-repl-eval-decl
         kill-region
+        markdown-electric-backquote
         markdown-outdent-or-delete
         my-eval-decl
         org-beginning-of-line
@@ -25,6 +28,8 @@
         org-return-indent
         org-self-insert-command
         org-yank
+        phi-search
+        phi-search-backward
         sh-assignment
         undefined
         upcase-region
@@ -32,6 +37,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        ahs-backward
         ahs-forward
         artist-previous-line
         counsel-M-x
@@ -43,6 +49,8 @@
         indent-rigidly
         ivy-end-of-buffer
         list-directory
+        mouse-drag-vertical-line
+        swiper
         swiper-mc
         wgrep-finish-edit
         ))

@@ -155,3 +155,6 @@ bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN
 # Spotify pause with Pause/Break
 bindsym Pause exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 
+# Calculator
+bindsym XF86Calculator exec gnome-terminal --hide-menubar -e 'bc -q -l'
+

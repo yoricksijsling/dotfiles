@@ -139,6 +139,18 @@ bar {
         tray_output primary
 }
 
+# Default monitors for workspaces
+workspace 1 output HDMI-1
+workspace 2 output HDMI-2
+workspace 3 output HDMI-1
+workspace 4 output HDMI-2
+workspace 5 output HDMI-1
+workspace 6 output HDMI-2
+workspace 7 output HDMI-1
+workspace 8 output HDMI-2
+workspace 9 output HDMI-1
+workspace 0 output HDMI-2
+
 # Lock via screensaver activation
 bindsym $mod+l exec xset s activate
 

@@ -67,6 +67,36 @@
 
 
 ;; --------------------------------------------------------------------------------
+;; Keep track of selected window and buffer
+
+(defvar my-selected-window nil
+  "Currently selected window as the user sees it.
+Changes when the user moves to another buffer or focuses another window.
+Does not change when using `with-temporary-buffer' or `with-selected-window'.
+   ")
+
+(defvar my-selected-window-changed-hook nil
+  "Hook called after `my-selected-window' has changed.")
+
+(setq my-selected-window/invalidated nil)
+(defun my-invalidate-selected-window ()
+  (setq my-selected-window/invalidated t))
+(defun my-refresh-selected-window ()
+  (when my-selected-window/invalidated
+    (setq my-selected-window/invalidated nil)
+    (let ((new-selected-window (selected-window)))
+      (when (not (eq new-selected-window my-selected-window))
+        ;; (message "Setting selected window to %s" (selected-window))
+        ;; (message nil)
+        (setq my-selected-window (selected-window))
+        (run-hooks 'my-selected-window-changed-hook)
+    ))))
+(add-hook 'buffer-list-update-hook 'my-invalidate-selected-window)
+(add-hook 'post-command-hook 'my-refresh-selected-window)
+(add-function :before pre-redisplay-function (lambda (_wins) (my-refresh-selected-window)))
+
+
+;; --------------------------------------------------------------------------------
 ;;   Haskell
 
 (require 'haskell)   ;; Custom version, see init.el
@@ -346,37 +376,48 @@ ag."
 (setq python-shell-interpreter "ipython")
 (setq python-shell-interpreter-args "-i --simple-prompt")
 
-(setq venv-dirlookup-names '("ansible-venv" "requestmachine-venv" "sharkmachine-venv" ".venv" "venv"))
+;; Emacs IPython Notebook
+;; (setq ein:url-localhost "localhost")
+;; (setq ein:url-localhost-template "http://localhost:%s")
+
 (setq venv-shorter-names '(("requestmachine-venv" "rm")
                            ("sharkmachine-venv" "shm")
                            ("ansible-venv" "ansible")
                            ))
 
-(defun my-venv-projectile-auto-workon ()
-  (interactive)
-  (let* ((projectile-require-project-root nil) ;; So projectile-project-root doesn't err
-         (path (--first
-                (file-exists-p it)
-                (--map (concat (projectile-project-root) it)
-                        venv-dirlookup-names))))
-    (if path
-        (pyvenv-activate path)
-      (pyvenv-deactivate)
-      )))
+(defvar my-venv-known-projects nil
+  "Association list to look up virtual environments based on project directories.")
 
-(defun my-shorten-venv-name (venv-name)
-  "Find the shorter name for the given venv nam. May return nil."
-  (cadr (--first (string-equal (car it) venv-name) venv-shorter-names)))
+;; Initially fill my-venv-known-projects with those known by pipenv.
+(--each (file-expand-wildcards "~/.local/share/virtualenvs/*/.project")
+  (with-temp-buffer
+    (insert-file-contents it)
+    (add-to-list 'my-venv-known-projects (cons (file-name-as-directory (buffer-string)) it))
+    ))
+
+(defun my-venv-projectile-auto-workon ()
+  (let* ((projectile-require-project-root nil) ;; So projectile-project-root doesn't err
+         (venv-path (cdr (assoc (projectile-project-root) my-venv-known-projects))))
+    (if venv-path
+        (progn
+          ;; (message "switching %s" venv-path)
+          (pyvenv-activate venv-path)
+          )
+      ;; (message "deact")
+      (pyvenv-deactivate)
+      ))
+  ;; (message nil)
+  )
+(add-hook 'my-selected-window-changed-hook 'my-venv-projectile-auto-workon)
 
 (defadvice pyvenv-activate (after venv-name-shorten activate)
  (setq pyvenv-virtual-env-name
        (or (my-shorten-venv-name pyvenv-virtual-env-name) pyvenv-virtual-env-name)))
 
-;; Powerline figured out how to detect buffer/window focus pretty
-;; reliably, so we reuse that to detect which venv we should switch
-;; to. Use `pyvenv-virtual-env-name` to see the current venv.
-(defadvice powerline-set-selected-window (after venv-set-selected-window activate)
-  (my-venv-projectile-auto-workon))
+(defun my-shorten-venv-name (venv-name)
+  "Find the shorter name for the given venv nam. May return nil."
+  (cadr (--first (string-equal (car it) venv-name) venv-shorter-names)))
+
 
 
 ;; --------------------------------------------------------------------------------
@@ -627,11 +668,6 @@ _q_uit _RET_: current
 ;; Dired
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
-;; Keep track of the actually selected window for mode line
-(defvar my-real-selected-window nil)
-(add-function :before pre-redisplay-function
-              (lambda (_wins) (setq my-real-selected-window (selected-window))))
-
 ;; Clean up mode line
 (setq sml/theme 'light-powerline)
 (setq sml/no-confirm-load-theme t)
@@ -653,7 +689,7 @@ _q_uit _RET_: current
          ;; sml/pre-modes-separator
          mode-line-modes       ;; Major mode and minor modes
          mode-line-misc-info   ;; Would normally includes venv
-         (:eval (when (eq (selected-window) my-real-selected-window)
+         (:eval (when (eq (selected-window) my-selected-window)
                   pyvenv-virtual-env-name))
          mode-line-end-spaces
          )))

@@ -390,20 +390,21 @@ ag."
 ;; (setq ein:url-localhost "localhost")
 ;; (setq ein:url-localhost-template "http://localhost:%s")
 
-(setq venv-shorter-names '(("requestmachine-venv" "rm")
-                           ("sharkmachine-venv" "shm")
-                           ("ansible-venv" "ansible")
-                           ))
+(defvar my-venv-pretty-names nil
+  "Association list with prettier names for virtual environments. For example:
+
+    (\"todoist-python-mLoYWY0A\" . \"todoist\")")
 
 (defvar my-venv-known-projects nil
   "Association list to look up virtual environments based on project directories.")
 
 ;; Initially fill my-venv-known-projects with those known by pipenv.
 (--each (file-expand-wildcards "~/.local/share/virtualenvs/*/.project")
-  (with-temp-buffer
-    (insert-file-contents it)
-    (add-to-list 'my-venv-known-projects (cons (file-name-as-directory (buffer-string)) it))
-    ))
+  (let ((project-dir (with-temp-buffer
+                       (insert-file-contents it)
+                       (file-name-as-directory (buffer-string))))
+        (venv-dir (file-name-directory it)))
+    (add-to-list 'my-venv-known-projects (cons project-dir venv-dir))))
 
 (defun my-venv-projectile-auto-workon ()
   (let* ((projectile-require-project-root nil) ;; So projectile-project-root doesn't err
@@ -426,7 +427,7 @@ ag."
 
 (defun my-shorten-venv-name (venv-name)
   "Find the shorter name for the given venv nam. May return nil."
-  (cadr (--first (string-equal (car it) venv-name) venv-shorter-names)))
+  (cdr (assoc venv-name my-venv-pretty-names)))
 
 
 

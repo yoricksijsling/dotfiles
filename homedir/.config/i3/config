@@ -60,7 +60,7 @@ bindsym $mod+u fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
+# bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -175,3 +175,6 @@ bindsym XF86Calculator exec gnome-terminal --hide-menubar -e 'bc -q -l'
 # bindsym --release Print exec import png:- | xclip -selection clipboard -t image/png
 bindsym --release Print exec python2 /home/yorick/opensource/escrotum/escrotum/escrotum/main.py --select --clipboard
 
+# Add todo to todoist
+for_window [class="FXTerm"] floating enable
+bindsym $mod+t exec /home/yorick/dotfiles/scripts/todo.sh

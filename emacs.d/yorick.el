@@ -130,6 +130,16 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
         ))
 (setq haskell-interactive-popup-errors nil)
 
+(define-key haskell-interactive-mode-map (kbd "RET") 'my-haskell-interactive-mode-return)
+(defun my-haskell-interactive-mode-return ()
+  (interactive)
+  (let* ((overlays (overlays-at (point)))
+         (overlay-first-props (--map (car (overlay-properties it)) overlays)))
+    (if (--any? (equal it 'goto-address) overlay-first-props)
+        (goto-address-at-point)
+      (haskell-interactive-mode-return)
+      )))
+
 (defun my-hoogle (query &optional info)
   "Do a Hoogle search for QUERY.
 

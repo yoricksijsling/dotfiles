@@ -26,13 +26,11 @@ cd ~/.emacs.d
 cask install
 ```
 
-We clone some packages manually. The `framemove` package isn't in the usual repositories, and there
-seems to be a bug in cask which breaks dependencies on git repositories. The `haskell-mode` and
-`emacs-purpose` packages have custom additions.
+We clone some packages manually. The `haskell-mode` and `emacs-purpose` packages have custom
+additions.
 
 ```
 cd ~/opensource
-git clone https://github.com/emacsmirror/framemove.git
 git clone git@github.com:yoricksijsling/haskell-mode.git
 git clone git@github.com:yoricksijsling/emacs-purpose.git
 ```
@@ -48,7 +46,6 @@ confidential stuff in there. Start out with something like this:
 ;; (package-initialize)
 
 ;; Packages from other sources
-(add-to-list 'load-path "~/opensource/framemove")
 (add-to-list 'load-path "~/opensource/emacs-purpose")
 (add-to-list 'load-path "~/opensource/haskell-mode")
 

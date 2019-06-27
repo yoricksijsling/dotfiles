@@ -477,9 +477,6 @@ ag."
 
 ;; Navigate frames
 (require 'cl)
-;; (require 'framemove)   ;; Disabled framemove for i3
-;; (setq framemove-hook-into-windmove t)
-;; (setq display-buffer-reuse-frames t)
 (add-to-list 'display-buffer-alist
              '("." nil (reusable-frames . t))) ;; Because display-buffer-reuse-frames is obsolete
 (add-hook 'next-error-hook 'raise-frame) ;; next-error will select the right window, but may have raised another frame due to reusable-frames.

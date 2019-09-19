@@ -99,6 +99,8 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
 ;; --------------------------------------------------------------------------------
 ;;   Haskell
 
+(require 'ghcid)   ;; Custom version
+
 (require 'haskell)   ;; Custom version, see init.el
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
@@ -435,20 +437,20 @@ ag."
 ;; Purpose
 
 (require 'window-purpose)   ;; Custom version, see init.el
+(require 'ivy-purpose)
 (purpose-mode)
 
 ;; All magit windows have different magit purposes. This way magit is allowed to pop buffers (for
 ;; instance diffs) into windows that are not currently magit purpose.
 (purpose-x-magit-multi-on)
 
+(setq purpose-preferred-prompt 'vanilla)
+
 (add-to-list 'purpose-user-mode-purposes '(haskell-interactive-mode . repl))
 (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . repl))
 (add-to-list 'purpose-user-mode-purposes '(ein:notebook-multilang-mode . repl))
-
+(add-to-list 'purpose-user-name-purposes '("*ghcid*" . repl))
 (purpose-compile-user-configuration)
-
-(require 'ivy-purpose)
-(setq purpose-preferred-prompt 'vanilla)
 
 ;; If i do C-x b, i want my buffer to go in the current window.
 (define-key purpose-mode-map (kbd "C-x b") 'ivy-purpose-switch-buffer-without-purpose)

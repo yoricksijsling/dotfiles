@@ -148,8 +148,7 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
 If prefix argument INFO is given, then hoogle is asked to show
 extra info for the items matching QUERY.
 
-Use `stack hoogle --rebuild --test --bench --no-run-tests --no-run-benchmarks` to generate the database.
-"
+To regenerate the database for a stack project I use 'hoogle-build.sh'."
   (interactive
    (let ((def (haskell-ident-at-point)))
      (if (and def (symbolp def)) (setq def (symbol-name def)))
@@ -159,11 +158,13 @@ Use `stack hoogle --rebuild --test --bench --no-run-tests --no-run-benchmarks` t
                         nil nil def)
            current-prefix-arg)))
   (let* ((p (haskell-interactive-process))
-         (cmd (concat ":!stack hoogle -- search "
+         (local-hoogle-root (string-trim-right (shell-command-to-string "stack path --local-hoogle-root")))
+         (cmd (concat ":!stack exec -- hoogle search "
                       "\'" query "\'"
                       ;; " --count=100"
                       " --link"
                       (if info " -i" "")
+                      " --database=" local-hoogle-root "/database.hoo"
                       ))
          (result (haskell-process-queue-sync-request p cmd))
          (text (concat ">> hoogle " query "\n" result)))

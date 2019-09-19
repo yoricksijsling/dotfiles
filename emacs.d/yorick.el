@@ -128,7 +128,7 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
       '("--ghci-options=-ferror-spans" ;; -ddump-splices -ddump-to-file"
         "--bench" "--test" ;; Include load paths for testing and benchmark packages
         ;; Default included no-build, but i want to build all my stuff
-        ;; Default included no-load, but i want all modules to be loaded??
+        "--no-load" ;; Don't load modules initially, just wait for user
         ))
 (setq haskell-interactive-popup-errors nil)
 

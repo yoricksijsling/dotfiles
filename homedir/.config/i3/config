@@ -40,10 +40,10 @@ bindsym $mod+Shift+k kill
 bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
 
 # change focus
-bindsym $mod+b exec /home/yorick/dotfiles/i3-navigate-emacs.sh left
-bindsym $mod+n exec /home/yorick/dotfiles/i3-navigate-emacs.sh down
-bindsym $mod+p exec /home/yorick/dotfiles/i3-navigate-emacs.sh up
-bindsym $mod+f exec /home/yorick/dotfiles/i3-navigate-emacs.sh right
+bindsym $mod+b exec --no-startup-id /home/yorick/dotfiles/i3-navigate-emacs.sh left
+bindsym $mod+n exec --no-startup-id /home/yorick/dotfiles/i3-navigate-emacs.sh down
+bindsym $mod+p exec --no-startup-id /home/yorick/dotfiles/i3-navigate-emacs.sh up
+bindsym $mod+f exec --no-startup-id /home/yorick/dotfiles/i3-navigate-emacs.sh right
 
 # move focused window
 bindsym $mod+Shift+b move left

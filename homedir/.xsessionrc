@@ -1,4 +1,10 @@
 # ln -s ~/dotfiles/homedir/.xsessionrc ~/.xsessionrc
 
-setxkbmap -option caps:super
+# Dvorak, with caps lock as super key
+setxkbmap dvorak -option caps:super
+
+# Screensaver after 5 minutes
 xset s 300
+
+# Swap mouse buttons
+xmodmap -e "pointer = 3 2 1"

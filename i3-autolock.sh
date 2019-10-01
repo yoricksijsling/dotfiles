@@ -26,6 +26,8 @@ esac
 # DPMS off after 10 seconds. Turns off monitors and spotify.
 xset dpms 0 0 10
 
+# Suspending is a separate thing, I'm using autosuspend.sh for that.
+
 # Lock screen uses this image.
 i3lock_options="-i /tmp/screen_locked.png"
 

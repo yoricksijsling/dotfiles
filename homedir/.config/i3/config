@@ -156,7 +156,8 @@ workspace 0 output HDMI-2
 bindsym $mod+l exec xset s activate
 
 # Use autolock script when screensaver activates or on suspend
-exec --no-startup-id xss-lock -- /home/yorick/dotfiles/i3-autolock.sh &
+exec --no-startup-id xss-lock -l -- /home/yorick/dotfiles/i3-autolock.sh &
+exec --no-startup-id /home/yorick/dotfiles/autosuspend.sh &
 # suspend is `sudo pm-suspend`
 
 # Pulse Audio

@@ -505,6 +505,15 @@ _q_uit
   ("q" nil)
   )
 
+;; (defhydra hydra-yank-pop ()
+;;   "yank"
+;;   ("C-y" yank nil)
+;;   ("M-y" yank-pop nil)
+;;   ("y" (yank-pop 1) "next")
+;;   ("Y" (yank-pop -1) "prev"))
+;; (global-set-key (kbd "M-y") #'hydra-yank-pop/yank-pop)
+;; (global-set-key (kbd "C-y") #'hydra-yank-pop/yank)
+
 (defhydra hydra-window (:hint nil)
   "
 _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ Dedicate to purpose/buffer
@@ -512,59 +521,80 @@ _b_/_f_/_p_/_n_ Movement  _0_ Delete window   _+_/_-_ Vert resize     _d_/_D_ De
 ^^^^^^      _Z_ Redo      _2_ Split below     ^^^^                    _q_/_SPC_/_RET_ Quit
 ^^^^^^      ^^            _3_ Split right
 "
-   ("b" windmove-left )
-   ("n" windmove-down )
-   ("p" windmove-up )
-   ("f" windmove-right )
-   ("0" delete-window)
-   ("1" delete-other-windows)
-   ("2" split-window-below)
-   ("3" split-window-right)
-   ("+" enlarge-window)
-   ("-" shrink-window)
-   ("=" enlarge-window)
-   ("{" shrink-window-horizontally)
-   ("}" enlarge-window-horizontally)
-   ("z" (progn
-          (winner-undo)
-          (setq this-command 'winner-undo))
-   )
-   ("Z" winner-redo)
-   ("d" purpose-toggle-window-purpose-dedicated)
-   ("D" purpose-toggle-window-buffer-dedicated)
-   ("o" ivy-purpose-switch-buffer-without-purpose)
-   ("k" kill-this-buffer)
-   ("q" nil)
-   ("SPC" nil)
-   ("RET" nil)
-   )
+  ("b" windmove-left )
+  ("n" windmove-down )
+  ("p" windmove-up )
+  ("f" windmove-right )
+  ("0" delete-window)
+  ("1" delete-other-windows)
+  ("2" split-window-below)
+  ("3" split-window-right)
+  ("+" enlarge-window)
+  ("-" shrink-window)
+  ("=" enlarge-window)
+  ("{" shrink-window-horizontally)
+  ("}" enlarge-window-horizontally)
+  ("z" (progn
+         (winner-undo)
+         (setq this-command 'winner-undo))
+  )
+  ("Z" winner-redo)
+  ("d" purpose-toggle-window-purpose-dedicated)
+  ("D" purpose-toggle-window-buffer-dedicated)
+  ("o" ivy-purpose-switch-buffer-without-purpose)
+  ("k" kill-this-buffer)
+  ("q" nil)
+  ("SPC" nil)
+  ("RET" nil)
+  )
 
-(defhydra hydra-smerge (:hint nil :pre (smerge-mode 1))
+(defhydra hydra-smerge (:hint nil :pre (smerge-mode 1) :post (smerge-mode -1))
   "
-^Move^ ^Keep^ ^Diff^ ^Pair^
-------------------------------------------------------
-_n_ext _b_ase _R_efine _<_: base-mine
-_p_rev _m_ine _E_diff _=_: mine-other
-^ ^ _o_ther _C_ombine _>_: base-other
-^ ^ _a_ll _r_esolve
-_q_uit _RET_: current
+_p_rev    _<_: Diff base-mine   _k_<: Keep mine   _C_ombine
+_n_ext    _=_: Diff mine-other  _k_=: Keep base   _R_efine
+^^        _>_: Diff base-other  _k_>: Keep other  _r_esolve
+_q_uit    _0_: Close diff       _k_a: Keep all    _E_diff
 "
-    ("RET" smerge-keep-current)
-    ("C" smerge-combine-with-next)
-    ("E" smerge-ediff)
-    ("R" smerge-refine)
-    ("a" smerge-keep-all)
-    ("b" smerge-keep-base)
-    ("m" smerge-keep-mine)
-    ("n" smerge-next)
-    ("o" smerge-keep-other)
-    ("p" smerge-prev)
-    ("r" smerge-resolve)
-    ("<" smerge-diff-base-mine)
-    ("=" smerge-diff-mine-other)
-    (">" smerge-diff-base-other)
-    ("q" nil :color blue)
-    )
+  ("p" smerge-prev)
+  ("n" smerge-next)
+  ("C-p" previous-line)
+  ("C-n" next-line)
+  ("C-l" recenter-top-bottom)
+  ("<" smerge-diff-base-mine)
+  ("=" smerge-diff-mine-other)
+  (">" smerge-diff-base-other)
+  ("0" delete-smerge-diff-window)
+  ("k" hydra-smerge-keep/body :exit t)
+  ("C" smerge-combine-with-next)
+  ("R" smerge-refine)
+  ("r" smerge-resolve)
+  ("E" smerge-ediff)
+  ("q" nil)
+  ("RET" nil)
+  )
+
+(defun delete-smerge-diff-window ()
+  (interactive)
+  (let ((window (get-buffer-window smerge-diff-buffer-name)))
+    (when window (delete-window window))))
+
+
+;; Called from hydra-smerge
+(defhydra hydra-smerge-keep (:hint nil :exit t)
+  "
+^^      ^^                    k_<_: Keep mine
+^^      ^^                    k_=_: Keep base
+_RET_: Quit^^                 k_>_: Keep other
+_q_:   back to hydra-smerge^^ k_a_: Keep all
+"
+  ("<" (progn (smerge-keep-mine) (hydra-smerge/body)))
+  ("=" (progn (smerge-keep-base) (hydra-smerge/body)))
+  (">" (progn (smerge-keep-other) (hydra-smerge/body)))
+  ("a" (progn (smerge-keep-all) (hydra-smerge/body)))
+  ("q" hydra-smerge/body)
+  ("RET" nil)
+  )
+
 
 ;; --------------------------------------------------------------------------------
 ;; Misc

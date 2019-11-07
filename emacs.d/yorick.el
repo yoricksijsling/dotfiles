@@ -667,6 +667,7 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
 (setq markdown-header-scaling t)
 ;; (setq markdown-header-scaling-values '(2.0 1.5 1.25 1.0 0.875 0.85))  ;; Github sizes
 (setq markdown-header-scaling-values '(1.73 1.44 1.2 1.0 1.0 1.0))  ;; max(1, 1.2^(n-2))
+(markdown-update-header-faces markdown-header-scaling markdown-header-scaling-values)
 
 ;; Auto highlight
 (setq auto-highlight-symbol-mode-map

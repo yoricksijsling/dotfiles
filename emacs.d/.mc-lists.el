@@ -19,8 +19,10 @@
         indent-rigidly-left
         intero-repl-eval-decl
         kill-region
+        markdown-cycle
         markdown-electric-backquote
         markdown-outdent-or-delete
+        markdown-shifttab
         my-eval-decl
         org-beginning-of-line
         org-end-of-line
@@ -33,6 +35,7 @@
         sh-assignment
         undefined
         upcase-region
+        yaml-electric-backspace
         ))
 
 (setq mc/cmds-to-run-once

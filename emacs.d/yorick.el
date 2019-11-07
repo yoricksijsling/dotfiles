@@ -451,6 +451,7 @@ ag."
 (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . repl))
 (add-to-list 'purpose-user-mode-purposes '(ein:notebook-multilang-mode . repl))
 (add-to-list 'purpose-user-name-purposes '("*ghcid*" . repl))
+(add-to-list 'purpose-user-name-purposes '("*SQL*" . repl))
 (purpose-compile-user-configuration)
 
 ;; If i do C-x b, i want my buffer to go in the current window.
@@ -594,6 +595,56 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
   ("q" hydra-smerge/body)
   ("RET" nil)
   )
+
+
+;; --------------------------------------------------------------------------------
+;; SQL
+
+(require 'sql)
+(setq sql-postgres-login-params
+      '((user :default "yorick")
+        (database :default "yorick")
+        password
+        server))
+(defun sql-start-session (connection)
+  "Open connection in a buffer called *SQL: my-connection*."
+  (interactive
+   (list (sql-read-connection "Connection: " nil '(nil))))
+
+  (let* ((buffer-name (format "*SQL: %s*" connection))
+         (existing-buffer (get-buffer buffer-name))
+         ;; sql-connect requires sql-product to be set. We take it from the
+         ;; connection. Weird that sql-connect doesn't already do that.
+         (connect-set (assoc-string connection sql-connection-alist t))
+         ;; (sql-product (eval (cadr (assoc 'sql-product (cdr connect-set)))))
+         )
+
+    ;; When we use commands like sql-connect and sql-list-table in the current
+    ;; buffer, the product of the given connection must be used.
+    (set (make-local-variable 'sql-product)
+         (eval (cadr (assoc 'sql-product (cdr connect-set)))))
+
+    ;; Enable product-specific syntax highlighting in the current buffer
+    (sql-highlight-product)
+    (if (and existing-buffer (get-buffer-process existing-buffer))
+        (progn
+          ;; Ensure that the local sql-buffer variable is correctly set.
+          (set (make-local-variable 'sql-buffer) existing-buffer)
+          (pop-to-buffer existing-buffer)
+          )
+      ;; This also sets the sql-buffer variable.
+      (sql-connect connection connection))
+    ))
+
+(defun my-sql-comint-postgres (product options)
+  "Create comint buffer and connect to Postgres.
+
+Unlike `sql-comint-postgres' this also sets the postgres password (through an
+environment variable)."
+  (let ((process-environment (cons (concat "PGPASSWORD=" sql-password)
+                                   process-environment)))
+    (sql-comint-postgres product options)))
+(sql-set-product-feature 'postgres :sqli-comint-func 'my-sql-comint-postgres)
 
 
 ;; --------------------------------------------------------------------------------

@@ -55,5 +55,14 @@ confidential stuff in there. Start out with something like this:
 
 ;; Use system ssh agent. Provided by keychain-environment package
 (keychain-refresh-environment)
+
+;; Postgres connections
+(add-to-list 'purpose-user-name-purposes '("*SQL: my-database*" . repl))
+(purpose-compile-user-configuration)
+(add-to-list 'sql-connection-alist
+             '(my-database (sql-product 'postgres)
+               (sql-user "admin") (sql-password "admin")
+               (sql-server "localhost") (sql-database "my-database") (sql-port 5432)))
+
 ```
 

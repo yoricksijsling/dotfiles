@@ -65,6 +65,38 @@
 (setq magit-bury-buffer-function 'magit-mode-quit-window) ;; Default was 'magit-restore-window-configuration
 ;; (setq magit-bury-buffer-function 'magit-restore-window-configuration) ;; Default was 'magit-restore-window-configuration
 
+(defun my-git-relevant-branches-for-rev (rev)
+  (-non-nil (list rev
+                  (magit-get-upstream-branch rev)
+                  (magit-get-push-branch rev))))
+
+(defun my-git-relevant-branches-for-revs (revs)
+  (-distinct
+   (-map 'substring-no-properties
+         (-mapcat 'my-git-relevant-branches-for-rev revs))))
+
+(defun magit-log-current-relevant (revs &optional args files)
+  "Log current, upstream and push branches.
+Similar interactive behaviour as `magit-log-current'."
+  (interactive (cons (magit-log-read-revs t)
+                     (magit-log-arguments)))
+  (magit-log-setup-buffer (my-git-relevant-branches-for-revs revs)
+                          args
+                          files))
+
+(defun magit-log-current-relevant-master (revs &optional args files)
+  "Show current, upstream and push branches. For master as well.
+Similar interactive behaviour as `magit-log-current'."
+  (interactive (cons (magit-log-read-revs t)
+                     (magit-log-arguments)))
+  (magit-log-setup-buffer (my-git-relevant-branches-for-revs (cons "master" revs))
+                          args
+                          files))
+
+(transient-append-suffix 'magit-log "h"
+  '("c" "current and relevant" magit-log-current-relevant))
+(transient-append-suffix 'magit-log "c"
+  '("C" "current, relevant and master" magit-log-current-relevant-master))
 
 ;; --------------------------------------------------------------------------------
 ;; Keep track of selected window and buffer

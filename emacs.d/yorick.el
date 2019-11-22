@@ -638,7 +638,8 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
         (database :default "yorick")
         password
         server))
-(defun sql-start-session (connection)
+
+(defun sql-start-session (connection &optional dont-pop-to-buffer)
   "Open connection in a buffer called *SQL: my-connection*."
   (interactive
    (list (sql-read-connection "Connection: " nil '(nil))))
@@ -648,7 +649,7 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
          ;; sql-connect requires sql-product to be set. We take it from the
          ;; connection. Weird that sql-connect doesn't already do that.
          (connect-set (assoc-string connection sql-connection-alist t))
-         ;; (sql-product (eval (cadr (assoc 'sql-product (cdr connect-set)))))
+         (initial-window (selected-window))
          )
 
     ;; When we use commands like sql-connect and sql-list-table in the current
@@ -662,10 +663,13 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
         (progn
           ;; Ensure that the local sql-buffer variable is correctly set.
           (set (make-local-variable 'sql-buffer) existing-buffer)
-          (pop-to-buffer existing-buffer)
+          (unless dont-pop-to-buffer (pop-to-buffer existing-buffer))
           )
-      ;; This also sets the sql-buffer variable.
-      (sql-connect connection connection))
+      (let ((new-buffer (sql-connect connection connection)))
+        (set (make-local-variable 'sql-buffer) new-buffer))
+      (when dont-pop-to-buffer
+        ;; sql-connect always pops to the new buffer, so try to undo it.
+        (select-window initial-window)))
     ))
 
 (defun my-sql-comint-postgres (product options)
@@ -677,6 +681,17 @@ environment variable)."
                                    process-environment)))
     (sql-comint-postgres product options)))
 (sql-set-product-feature 'postgres :sqli-comint-func 'my-sql-comint-postgres)
+
+(defun configure-sql-connections ()
+  "Call this after adding your connections to `sql-connection-alist'."
+  (--each sql-connection-alist
+    (add-to-list 'purpose-user-name-purposes
+                 (cons (concat "*SQL: " (symbol-name (car it)) "*") 'repl))
+    (add-to-list 'markdown-code-lang-modes
+                 (cons (concat "sql-" (symbol-name (car it))) 'sql-mode))
+    )
+  (purpose-compile-user-configuration)
+  )
 
 
 ;; --------------------------------------------------------------------------------

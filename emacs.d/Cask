@@ -32,6 +32,7 @@
 (depends-on "magit-popup")
 (depends-on "markdown-mode")
 (depends-on "multiple-cursors")
+(depends-on "nix-mode")
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "phi-search")

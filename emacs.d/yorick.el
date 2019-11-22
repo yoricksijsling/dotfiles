@@ -672,6 +672,57 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
         (select-window initial-window)))
     ))
 
+(defun markdown-sql-send (current-point)
+  "Send the sql expression at point to an sql session."
+  (interactive "d")  ;; Get point
+  (let ((code-bounds (get-text-property current-point 'markdown-gfm-code)))
+    (unless code-bounds (error "Not in code block"))
+
+    ;; markdown-get-enclosing-fenced-block-construct also extracts the current
+    ;; code block, but includes the start and end tags.
+    (let ((code (buffer-substring-no-properties (cl-first code-bounds) (cl-second code-bounds)))
+          (lang (save-excursion (markdown-code-block-lang)))
+          (after-code (save-excursion (goto-char (cl-second code-bounds))
+                                      (next-line)
+                                      (point))))
+
+      (when (s-starts-with? "sql-" lang)
+        (let ((connection (s-chop-prefix "sql-" lang)))
+          (sql-start-session connection t)
+          (sql-redirect-one sql-buffer code "*SQL-GFM-TEMP*" nil)
+
+          (let* ((raw (with-current-buffer "*SQL-GFM-TEMP*"
+                        (buffer-substring-no-properties (point-min) (point-max))))
+
+                 ;; (prompts (list (sql-get-product-feature sql-product :prompt-cont-regexp)
+                 ;;                (sql-get-product-feature sql-product :prompt-regexp)))
+                 (prompts (list "^\\(\\w*[-(][#>] \\)*"  ;; Remove multiple continuation prompts
+                                "^\\w*=[#>] "))
+                 (without-prompts (--reduce-from (s-replace-regexp it "" acc) raw prompts))
+
+                 (processed (apply 's-concat
+                                   (--map (concat "|" (s-truncate 1000 it "| ...") "\n")
+                                          (--remove (or (s-blank? it)
+                                                        (s-matches? "^([0-9]+ rows?)$" it))
+                                                    (s-lines without-prompts))))))
+
+            (save-excursion
+              ;; Move after the code block
+              (goto-char (cl-second code-bounds))
+              (forward-line 1)
+
+              ;; After the code block, remove all consecutive lines starting with a | character
+              (while (looking-at "^|")
+                (delete-region (point) (progn (forward-line 1) (point))))
+
+              (when (not (s-blank? processed))
+                (insert processed)
+                (forward-line -1)
+                (markdown-table-forward-cell)))
+            ))
+
+        ))))
+
 (defun my-sql-comint-postgres (product options)
   "Create comint buffer and connect to Postgres.
 
@@ -766,6 +817,7 @@ environment variable)."
 ;; (setq markdown-header-scaling-values '(2.0 1.5 1.25 1.0 0.875 0.85))  ;; Github sizes
 (setq markdown-header-scaling-values '(1.73 1.44 1.2 1.0 1.0 1.0))  ;; max(1, 1.2^(n-2))
 (markdown-update-header-faces markdown-header-scaling markdown-header-scaling-values)
+(define-key markdown-mode-map (kbd "C-c C-r") 'markdown-sql-send)
 
 ;; Auto highlight
 (setq auto-highlight-symbol-mode-map

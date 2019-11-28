@@ -11,6 +11,7 @@
         downcase-region
         duplicate-line-or-region
         electric-newline-and-maybe-indent
+        end-of-visual-line
         fill-paragraph
         haskell-indentation-common-electric-command
         haskell-interactive-mode-space

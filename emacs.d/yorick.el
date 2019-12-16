@@ -794,6 +794,9 @@ environment variable)."
 ;; (setq visual-line-fringe-indicators '(nil nil))
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
+;; Use shellcheck for bash scripts
+(add-hook 'sh-mode-hook 'flycheck-mode)
+
 ;; Pallet to maintain entries in ~/.emacs.d/Cask automatically
 (require 'pallet)
 (pallet-mode t)

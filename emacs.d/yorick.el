@@ -789,6 +789,11 @@ environment variable)."
 (setq split-height-threshold 30)
 (setq split-width-threshold 100)
 
+;; Line wrapping for text modes
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+;; (setq visual-line-fringe-indicators '(nil nil))
+(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+
 ;; Pallet to maintain entries in ~/.emacs.d/Cask automatically
 (require 'pallet)
 (pallet-mode t)

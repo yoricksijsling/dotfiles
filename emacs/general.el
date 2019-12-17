@@ -208,6 +208,8 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
 (assq-delete-all 'auto-revert-mode minor-mode-alist)
 (assq-delete-all 'which-key-mode minor-mode-alist)
 (assq-delete-all 'highlight-indentation-mode minor-mode-alist)
+(assq-delete-all 'outline-minor-mode minor-mode-alist)
+(assq-delete-all 'buffer-face-mode minor-mode-alist)
 
 
 ;; --------------------------------------------------------------------------------

@@ -19,7 +19,7 @@
  '(fixed-pitch ((t (:family "Ubuntu Mono"))))
  '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "grey50"))))
  '(markdown-code-face ((t (:inherit fixed-pitch :background "gray96" :height 1.1))))
- '(markdown-header-face ((t (:foreground "medium blue" :weight bold))))
+ '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "Ubuntu"))))
  '(variable-pitch ((t (:height 0.9 :family "Comic Sans MS")))))
 
 

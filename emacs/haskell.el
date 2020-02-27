@@ -242,12 +242,15 @@ If the region is unset, the current declaration will be used."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-haskell-imports))
-    (prefix (and (derived-mode-p 'haskell-mode)
-                 (company-grab-line "^import....*")))
+    (prefix (company-grab-line "^import....*"))
     (candidates (search-haskell-imports arg))
     (no-cache t)
     ))
-(add-to-list 'company-backends 'company-haskell-imports)
+
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (add-to-list (make-local-variable 'company-backends)
+                         'company-haskell-imports)))
 
 (defun search-haskell-imports (arg)
   "Return suggestions by searching through the imports in all
@@ -260,8 +263,10 @@ ag."
                              (append (projectile-ignored-files-rel)
                                      (projectile-ignored-directories-rel))
                              ""))
-         (command (format counsel-ag-base-command ;; Reuse counsel config
-                          (concat ignored
+         (command (format (concat "ag "
+                                  ignored
+                                  " --nocolor"
+                                  " --nogroup"
                                   " --nofilename"
                                   " --nobreak"
                                   " --ignore-case"

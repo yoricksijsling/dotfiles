@@ -55,3 +55,57 @@
 (defun my-shorten-venv-name (venv-name)
   "Find the shorter name for the given venv nam. May return nil."
   (cdr (assoc venv-name my-venv-pretty-names)))
+
+
+;; --------------------------------------------------------------------------------
+;; Auto-complete imports
+
+(defun company-python-imports (command &optional arg &rest ignored)
+  "Company mode completions for imports"
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-python-imports))
+    (prefix (company-grab-line "^\\(from\\|import\\)....*"))
+    (candidates (search-python-imports arg))
+    (no-cache t)
+    ))
+
+(add-hook 'elpy-mode-hook
+          (lambda ()
+            (add-to-list (make-local-variable 'company-backends)
+                         'company-python-imports)))
+
+(defun search-python-imports (arg)
+  "Return suggestions by searching through the imports in all
+python files throughout the project. Depends on projectile and
+ag."
+  (let* ((ignored (mapconcat (lambda (i)
+                               (concat "--ignore "
+                                       (shell-quote-argument i)
+                                       " "))
+                             (append (projectile-ignored-files-rel)
+                                     (projectile-ignored-directories-rel))
+                             ""))
+         (command (format (concat "ag "
+                                  ignored
+                                  " --nocolor"
+                                  " --nogroup"
+                                  " --nofilename"
+                                  " --nobreak"
+                                  " --ignore-case"
+                                  " --file-search-regex .*py$"
+                                  " -- ")))
+         (regex (concat "^(from|import) .*"
+                        (s-join ".*" (-map (lambda (w)
+                                             (concat "\\b" w)
+                                             )
+                                           (cdr (split-string arg))))))
+         (command-list (append (split-string command) (list regex)))
+         (default-directory (projectile-project-root))  ;; For process-lines
+         (result (condition-case nil
+                     (apply 'process-lines command-list)
+                   ;; Error handler
+                   (error nil)
+                     ))
+         )
+    (cl-remove-duplicates result :test 'equal)))

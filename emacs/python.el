@@ -6,6 +6,8 @@
 (elpy-enable)
 (add-hook 'elpy-mode-hook 'flycheck-mode)
 (setq elpy-rpc-backend "jedi")
+(setq elpy-rpc-python-command "python3.7")  ;; Black doesn't work with python2.7
+(setq elpy-rpc-timeout 3)  ;; Timeout for black reformatting needs to be more than 1 second
 (setq pyvenv-mode nil)
 ;; https://elpy.readthedocs.io/en/latest/ide.html#interpreter-setup
 (setq python-shell-interpreter "ipython")

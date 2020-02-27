@@ -176,6 +176,10 @@ bindsym XF86Calculator exec gnome-terminal --hide-menubar -e 'bc -q -l'
 # bindsym --release Print exec import png:- | xclip -selection clipboard -t image/png
 bindsym --release Print exec python2 /home/yorick/opensource/escrotum/escrotum/escrotum/main.py --select --clipboard
 
+# Screencast
+bindsym --release Control+Print exec /home/yorick/dotfiles/i3-gif-capture.sh
+bindsym --release Control+Shift+Print exec pkill ffmpeg
+
 # Add todo to todoist
 for_window [class="FXTerm"] floating enable
 bindsym $mod+t exec /home/yorick/dotfiles/scripts/todo.sh

@@ -27,6 +27,14 @@
 ;; (projectile-global-mode +1) ;; Replaced by counsel-projectile-mode
 (setq projectile-show-paths-function 'projectile-hashify-with-relative-paths)
 (setq projectile-completion-system 'ivy)
+
+;; Use .projectile file ignores when finding files
+(setq projectile-indexing-method 'hybrid)
+
+;; Note:
+;; projectile-find-file uses .projectile, .ignore and .gitignore
+;; projectile-ripgrep uses .ignore and .gitignore
+
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (require 'counsel-projectile)

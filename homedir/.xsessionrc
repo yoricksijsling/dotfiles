@@ -2,6 +2,8 @@
 
 # Dvorak, with caps lock as super key
 setxkbmap dvorak -option caps:super
+# This is for use with my apple keyboard, where alt and cmd are the wrong way round
+# setxkbmap dvorak -option caps:super -option altwin:swap_lalt_lwin
 
 # Screensaver after 5 minutes
 xset s 300

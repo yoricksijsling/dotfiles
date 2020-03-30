@@ -190,3 +190,6 @@ for_window [] border pixel 2
 for_window [class="Firefox" window_role="browser"] border pixel 0
 for_window [class="Spotify"] border pixel 0
 for_window [class="Emacs"] border pixel 0
+
+# Safe eyes
+exec --no-startup-id safeeyes

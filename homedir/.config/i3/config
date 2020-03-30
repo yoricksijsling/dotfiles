@@ -183,9 +183,10 @@ bindsym --release Control+Shift+Print exec pkill ffmpeg
 # Add todo to todoist
 bindsym $mod+t exec /home/yorick/dotfiles/scripts/todo.sh
 
-# Disable title bar in general. 0-pixel border for some applications. (Use `i3-msg -t get-tree` to
+# Disable title bar in general. 0-pixel border for some applications. (Use `i3-msg -t get_tree` to
 # figure out the class)
 for_window [] border pixel 2
-for_window [class="Firefox"] border pixel 0
+# Firefox browser has window_role="browser", firefox inspector has window_role="toolbox"
+for_window [class="Firefox" window_role="browser"] border pixel 0
 for_window [class="Spotify"] border pixel 0
 for_window [class="Emacs"] border pixel 0

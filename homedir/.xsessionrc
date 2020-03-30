@@ -7,4 +7,4 @@ setxkbmap dvorak -option caps:super
 xset s 300
 
 # Swap mouse buttons
-xmodmap -e "pointer = 3 2 1"
+# xmodmap -e "pointer = 3 2 1"

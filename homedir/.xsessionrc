@@ -10,3 +10,6 @@ xset s 300
 
 # Swap mouse buttons
 # xmodmap -e "pointer = 3 2 1"
+
+# Disable repeat of F1
+xset -r 67

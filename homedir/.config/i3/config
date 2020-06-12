@@ -37,7 +37,8 @@ bindsym $mod+Shift+k kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
+# bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
+bindsym $mod+d exec --no-startup-id rofi -show combi -combi-modi "drun#run"
 
 # change focus
 bindsym $mod+b exec --no-startup-id /home/yorick/dotfiles/i3-navigate-emacs.sh left
@@ -197,3 +198,4 @@ for_window [class="Emacs"] border pixel 0
 
 # Safe eyes
 exec --no-startup-id safeeyes
+exec compton

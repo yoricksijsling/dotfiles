@@ -1,9 +1,20 @@
 #!/bin/bash
 
 #
-# Start watching a process using `./i3-procwatch.sh register 1234`
+# Show a list of candidates process, where you can pick one that you want to
+# keep a watch on:
 #
-# Use `./i3-procwatch.sh watch` in i3blocks to watch processes
+#     ./i3-procwatch.sh
+#
+# Show the processes being watched. Useful to poll every second in
+# e.g. i3blocks:
+#
+#     ./i3-procwatch.sh watch
+#
+# You can also manually register a process id, if you already know which one:
+#
+#     ./i3-procwatch.sh register 1234
+#
 
 set -euo pipefail
 shopt -s nullglob
@@ -87,6 +98,5 @@ function interactive()
 case "${1-interactive}" in
     "register") register "$2";;
     "watch") watch;;
-    "list-potentials") list-potentials;;
     "interactive") interactive;;
 esac

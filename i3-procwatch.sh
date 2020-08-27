@@ -5,6 +5,7 @@
 #
 # Use `./i3-procwatch.sh watch` in i3blocks to watch processes
 
+set -euo pipefail
 shopt -s nullglob
 
 I3_PROCWATCH_DIR="$HOME/.i3-procwatch"
@@ -12,24 +13,25 @@ I3_PROCWATCH_DIR="$HOME/.i3-procwatch"
 function register()
 {
     local pid="$1"
-    local proc_name
-    proc_name=$(ps -p "$pid" -o comm=)
-    echo "$proc_name" > "$I3_PROCWATCH_DIR/$pid"
+    ps --no-headers -p "$pid" -o pid,comm > "$I3_PROCWATCH_DIR/$pid"
 }
 
 function watch()
 {
-    local proc_name
+    local ps_output
+    local proc_desc
     cd "$I3_PROCWATCH_DIR" || exit
     for pid in *; do
         if [[ ! $pid =~ [0-9]+ ]]; then continue; fi
-        proc_name=$(cat "$pid")
-        if ps -p "$pid">/dev/null; then
-            echo -n "$pid $proc_name "
+        # ps fails if the process doesn't exist
+        if ps_output=$(ps -p "$pid" --no-headers -o comm,etime | awk '$1=$1'); then
+            # proc_desc=$(echo "$ps_output" | awk '$1=$1')
+            echo -n "$ps_output "
         else
+            proc_desc=$(cat "$pid")
             rm "$pid"
             pkill notify-osd
-            notify-send "Finished $pid $proc_name"
+            notify-send "Finished $proc_desc"
         fi
     done
 }
@@ -62,7 +64,7 @@ function list-potentials()
       '
     ps a --no-headers --sort=-tty,-etime -o pid:6,tty:7,etimes:12,comm:19 \
         | awk -v current_tty="$current_tty" "$awkscript" \
-        | sort -k3
+        | sort -nk3
 }
 
 function interactive()
@@ -82,9 +84,9 @@ function interactive()
     done
 }
 
-case "$1" in
+case "${1-interactive}" in
     "register") register "$2";;
     "watch") watch;;
     "list-potentials") list-potentials;;
-    *) interactive;;
+    "interactive") interactive;;
 esac

@@ -20,6 +20,8 @@
 (depends-on "git-commit")
 (depends-on "github-browse-file")
 (depends-on "gnu-elpa-keyring-update")
+(depends-on "handlebars-mode")
+(depends-on "handlebars-sgml-mode")
 (depends-on "haskell-mode")
 (depends-on "highlight-indentation")
 (depends-on "hydra")

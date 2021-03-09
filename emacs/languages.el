@@ -49,6 +49,12 @@
 (add-hook 'nxml-mode-hook 'hs-minor-mode)
 (define-key nxml-mode-map (kbd "C-c h") 'hs-toggle-hiding)
 
+(require 'handlebars-sgml-mode)
+(handlebars-use-mode 'global) ;; always use handlebars-minor-mode
+;; (handlebars-use-mode 'off)       ;; Never use handlebars-mode (the default)
+;; (handlebars-use-mode 'minor)  ;; Only use if in 'handlebars-sgml-minor-mode
+(add-to-list ' auto-mode-alist '("\\.hbs$" . html-mode))
+(setq sgml-basic-offset 4)
 
 ;;--------------------------------------------------------------------------------
 ;; Javascript / JSON

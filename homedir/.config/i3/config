@@ -135,11 +135,14 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        # status_command i3status
-        status_command i3blocks
-        tray_output primary
-}
+# bar {
+#         # status_command i3status
+#         status_command i3blocks
+#         tray_output primary
+# }
+exec_always --no-startup-id polybar-msg cmd restart
+exec --no-startup-id polybar --reload left
+exec --no-startup-id polybar --reload right
 
 # Default monitors for workspaces
 workspace 1 output HDMI-1

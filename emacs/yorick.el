@@ -17,10 +17,17 @@
 (custom-set-faces
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "#222" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
  '(fixed-pitch ((t (:family "Ubuntu Mono"))))
- '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "grey50"))))
- '(markdown-code-face ((t (:inherit fixed-pitch :background "gray96" :height 1.1))))
- '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "Ubuntu"))))
- '(variable-pitch ((t (:height 0.9 :family "Comic Sans MS")))))
+ '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "gray50"))))
+ '(markdown-code-face ((t (:inherit fixed-pitch :background "gray96" :height 0.88))))
+ '(markdown-inline-code-face ((t (:inherit fixed-pitch :height 0.88))))
+ '(markdown-pre-face ((t (:inherit markdown-code-face))))
+ '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "EB Garamond SC"))))
+ '(markdown-header-rule-face ((t (:inherit markdown-markup-face))))
+ '(markdown-language-keyword-face ((t (:inherit shadow))))
+ '(markdown-link-face ((t (:inherit link :underline (:color "#adbdeb")))))
+ '(markdown-url-face ((t (:inherit shadow))))
+ '(shadow ((t (:foreground "gray60"))))
+ '(variable-pitch ((t (:height 1.13 :family "EB Garamond")))))
 
 
 (load "~/dotfiles/emacs/languages.el")

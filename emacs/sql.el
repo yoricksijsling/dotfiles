@@ -44,53 +44,83 @@
 (defun markdown-sql-send (current-point)
   "Send the sql expression at point to an sql session."
   (interactive "d")  ;; Get point
-  (let ((code-bounds (get-text-property current-point 'markdown-gfm-code)))
-    (unless code-bounds (error "Not in code block"))
+  (let ((block (--gfm-get-sql-block current-point)))
+    (when block
+      (let* ((without-prompts (--gfm-run-sql (gfm-sql-block-connection block)
+                                             (gfm-sql-block-query block)))
+             (cleaned-lines (--remove (or (s-blank? it)
+                                          (s-matches? "^([0-9]+ rows?)$" it))
+                                      (s-lines without-prompts)))
+             (processed (apply 's-concat
+                               (--map (concat "|" (s-truncate 1000 it "| ...") "\n")
+                                      cleaned-lines
+                                      ))))
 
-    ;; markdown-get-enclosing-fenced-block-construct also extracts the current
-    ;; code block, but includes the start and end tags.
-    (let ((code (buffer-substring-no-properties (cl-first code-bounds) (cl-second code-bounds)))
-          (lang (save-excursion (markdown-code-block-lang)))
-          (after-code (save-excursion (goto-char (cl-second code-bounds))
-                                      (next-line)
-                                      (point))))
+        (save-excursion
+          ;; Move after the code block
+          (goto-char (cl-second (gfm-sql-block-bounds block)))
+          (forward-line 1)
 
-      (when (s-starts-with? "sql-" lang)
-        (let ((connection (s-chop-prefix "sql-" lang)))
-          (sql-start-session connection t)
-          (sql-redirect-one sql-buffer code "*SQL-GFM-TEMP*" nil)
+          ;; After the code block, remove all consecutive lines starting with a | character
+          (while (looking-at "^|")
+            (delete-region (point) (progn (forward-line 1) (point))))
 
-          (let* ((raw (with-current-buffer "*SQL-GFM-TEMP*"
-                        (buffer-substring-no-properties (point-min) (point-max))))
-
-                 ;; (prompts (list (sql-get-product-feature sql-product :prompt-cont-regexp)
-                 ;;                (sql-get-product-feature sql-product :prompt-regexp)))
-                 (prompts (list "^\\(\\w*[-(][#>] \\)*"  ;; Remove multiple continuation prompts
-                                "^\\w*=[#>] "))
-                 (without-prompts (--reduce-from (s-replace-regexp it "" acc) raw prompts))
-
-                 (processed (apply 's-concat
-                                   (--map (concat "|" (s-truncate 1000 it "| ...") "\n")
-                                          (--remove (or (s-blank? it)
-                                                        (s-matches? "^([0-9]+ rows?)$" it))
-                                                    (s-lines without-prompts))))))
-
-            (save-excursion
-              ;; Move after the code block
-              (goto-char (cl-second code-bounds))
-              (forward-line 1)
-
-              ;; After the code block, remove all consecutive lines starting with a | character
-              (while (looking-at "^|")
-                (delete-region (point) (progn (forward-line 1) (point))))
-
-              (when (not (s-blank? processed))
-                (insert processed)
-                (forward-line -1)
-                (markdown-table-forward-cell)))
-            ))
-
+          (when (not (s-blank? processed))
+            (insert processed)
+            (forward-line -1)
+            (markdown-table-forward-cell)))
         ))))
+
+(defun markdown-sql-explanalyze (current-point)
+  "Explain/analyze the sql expression at point."
+  (interactive "d")  ;; Get point
+  (let ((block (--gfm-get-sql-block current-point)))
+    (when block
+      (let* ((explain-query (s-concat "EXPLAIN (ANALYZE, COSTS, VERBOSE, BUFFERS, FORMAT JSON) "
+                                      (gfm-sql-block-query block)))
+             (connection (gfm-sql-block-connection block))
+             (o1 (--gfm-run-sql connection "\\pset format unaligned"))
+             (result (--gfm-run-sql connection explain-query))
+             (o2 (--gfm-run-sql connection "\\pset format aligned"))
+             (url (s-concat "file:///home/yorick/pev2/index.html"
+                            "?plan="
+                            (url-hexify-string result)
+                            "&query="
+                            (url-hexify-string explain-query)))
+             )
+        (browse-url url)))))
+
+(cl-defstruct gfm-sql-block bounds query connection)
+
+(defun --gfm-get-sql-block (current-point)
+  ;; markdown-get-enclosing-fenced-block-construct also extracts the current
+  ;; code block, but includes the start and end tags.
+  (let ((code-bounds (get-text-property current-point 'markdown-gfm-code)))
+    (when code-bounds
+      (let ((lang (save-excursion (markdown-code-block-lang))))
+        (when (s-starts-with? "sql-" lang)
+          (make-gfm-sql-block
+           :bounds code-bounds
+           :query (buffer-substring-no-properties (cl-first code-bounds) (cl-second code-bounds))
+           :connection (s-chop-prefix "sql-" lang)
+           ))))))
+
+
+(defun --gfm-run-sql (connection query)
+  """
+  Run the query in the sql code block at point and return the result string.
+  """
+  (sql-start-session connection t)
+  (sql-redirect-one sql-buffer query "*SQL-GFM-TEMP*" nil)
+
+  (let* ((raw (with-current-buffer "*SQL-GFM-TEMP*"
+                (buffer-substring-no-properties (point-min) (point-max))))
+         (prompts (list "^\\(\\w*[-(][#>] \\)*"  ;; Remove multiple continuation prompts
+                        "^\\w*=[#>] "))
+         (without-prompts (--reduce-from (s-replace-regexp it "" acc) raw prompts))
+         )
+    without-prompts))
+
 
 (defun my-sql-comint-postgres (product options)
   "Create comint buffer and connect to Postgres.

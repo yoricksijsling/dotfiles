@@ -11,6 +11,9 @@
         downcase-region
         duplicate-line-or-region
         electric-newline-and-maybe-indent
+        elpy-nav-backward-indent
+        elpy-nav-indent-shift-left
+        elpy-nav-indent-shift-right
         end-of-visual-line
         fill-paragraph
         haskell-indentation-common-electric-command
@@ -50,10 +53,13 @@
         dired
         eval-print-last-sexp
         handle-switch-frame
+        hydra-hydra/body
+        hydra-hydra/nil
         indent-rigidly
         ivy-end-of-buffer
         list-directory
         mouse-drag-vertical-line
+        overwrite-mode
         swiper
         swiper-mc
         wgrep-finish-edit

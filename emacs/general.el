@@ -230,12 +230,15 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
   "
 _w_indow
 _s_merge %`smerge-mode
+_m_arkdown
 _q_uit
 "
   ("s" hydra-smerge/body)
   ("C-s" hydra-smerge/body)
   ("w" hydra-window/body)
   ("C-w" hydra-window/body)
+  ("m" hydra-markdown/body)
+  ("C-m" hydra-markdown/body)
   ("q" nil)
   )
 
@@ -291,9 +294,6 @@ _q_uit    _0_: Close diff       _k_a: Keep all    _E_diff
 "
   ("p" smerge-prev)
   ("n" smerge-next)
-  ("C-p" previous-line)
-  ("C-n" next-line)
-  ("C-l" recenter-top-bottom)
   ("<" smerge-diff-base-mine)
   ("=" smerge-diff-mine-other)
   (">" smerge-diff-base-other)
@@ -305,6 +305,10 @@ _q_uit    _0_: Close diff       _k_a: Keep all    _E_diff
   ("E" smerge-ediff)
   ("q" nil)
   ("RET" nil)
+  ;; Basic navigation
+  ("C-p" previous-line)
+  ("C-n" next-line)
+  ("C-l" recenter-top-bottom)
   )
 
 (defun delete-smerge-diff-window ()
@@ -326,6 +330,44 @@ _q_:   back to hydra-smerge^^ k_a_: Keep all
   (">" (progn (smerge-keep-other) (hydra-smerge/body)))
   ("a" (progn (smerge-keep-all) (hydra-smerge/body)))
   ("q" hydra-smerge/body)
+  ("RET" nil)
+  )
+
+(defhydra hydra-markdown (:hint nil)
+  "
+^^         ^^                  With current heading:
+_a_ll      _p_revious heading  TAB: Cycle visibility
+_o_utline  _n_ext heading      _s_: Hide subtree
+_q_uit                         _t_: Show subtree
+"
+  ("a" outline-show-all)
+  ("o" (progn (outline-show-branches) (outline-hide-leaves)))
+  ("p" markdown-outline-previous)
+  ("C-p" markdown-outline-previous)
+  ("n" markdown-outline-next)
+  ("C-n" markdown-outline-next)
+  ("TAB" markdown-cycle)
+  ("s" outline-hide-subtree)
+  ("t" outline-show-subtree)
+  ;; ("l" markdown-hide-leaves)
+  ;; ("C-k" markdown-show-branches)
+  ;; ("C-p" markdown-outline-previous)
+  ;; ("C-n" markdown-outline-next)
+  ;; ("C-b" markdown-outline-previous-same-level)
+  ;; ("C-f" markdown-outline-next-same-level)
+  ;; ("C-t" outline-hide-body)       ;; Default C-c @ C-t
+  ;; ("C-c" outline-hide-entry)      ;; Default C-c @ C-c
+  ;; ("C-l" outline-hide-leaves)     ;; Default C-c @ C-l
+  ;; ("C-o" outline-hide-other)      ;; Default C-c @ C-o
+  ;; ("C-q" outline-hide-sublevels)  ;; Default C-c @ C-q
+  ;; ("C-d" outline-hide-subtree)    ;; Default C-c @ C-d
+  ;; ("C-x" outline-toggle-children) ;; No shortcut by default
+  ;; ("C-a" outline-show-all)        ;; Default C-c @ C-a
+  ;; ("C-k" outline-show-branches)   ;; Default C-c @ C-k
+  ;; ("TAB" outline-show-children)   ;; Default C-c @ TAB
+  ;; ("C-e" outline-show-entry)      ;; Default C-c @ C-e
+  ;; ("C-s" outline-show-subtree)    ;; Default C-c @ C-s
+  ("q" nil)
   ("RET" nil)
   )
 

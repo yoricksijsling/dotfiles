@@ -35,6 +35,10 @@
 ;; projectile-find-file uses .projectile, .ignore and .gitignore
 ;; projectile-ripgrep uses .ignore and .gitignore
 
+;; Default is "rg --with-filename --no-heading --line-number --color never %s"
+;; I want to include hidden directories and files
+(setq counsel-rg-base-command "rg --hidden --with-filename --no-heading --line-number --color never %s")
+
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (require 'counsel-projectile)

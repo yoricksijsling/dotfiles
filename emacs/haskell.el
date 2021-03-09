@@ -26,6 +26,7 @@
 (setq haskell-process-suggest-remove-import-lines nil)
 ;; (setq haskell-process-suggest-hoogle-imports t)
 (setq haskell-tags-on-save t)
+;; (setq haskell-stylish-on-save t)
 (setq haskell-process-args-stack-ghci
       '("--ghci-options=-ferror-spans" ;; -ddump-splices -ddump-to-file"
         "--bench" "--test" ;; Include load paths for testing and benchmark packages
@@ -60,7 +61,7 @@ To regenerate the database for a stack project I use 'hoogle-build.sh'."
                         nil nil def)
            current-prefix-arg)))
   (let* ((p (haskell-interactive-process))
-         (local-hoogle-root (string-trim-right (shell-command-to-string "stack path --local-hoogle-root")))
+         (local-hoogle-root (string-trim-right (shell-command-to-string "stack path --local-hoogle-root 2>/dev/null")))
          (cmd (concat ":!stack exec -- hoogle search "
                       "\'" query "\'"
                       ;; " --count=100"

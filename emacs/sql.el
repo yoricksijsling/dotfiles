@@ -122,14 +122,14 @@
     without-prompts))
 
 
-(defun my-sql-comint-postgres (product options)
+(defun my-sql-comint-postgres (product options &optional buf-name)
   "Create comint buffer and connect to Postgres.
 
 Unlike `sql-comint-postgres' this also sets the postgres password (through an
 environment variable)."
   (let ((process-environment (cons (concat "PGPASSWORD=" sql-password)
                                    process-environment)))
-    (sql-comint-postgres product options)))
+    (sql-comint-postgres product options buf-name)))
 (sql-set-product-feature 'postgres :sqli-comint-func 'my-sql-comint-postgres)
 
 (defun configure-sql-connections ()

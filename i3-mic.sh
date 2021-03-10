@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Use this script to show microphone status in i3 blocks
+# Use this script to show microphone status in polybar
 #
 # Enable/disable microphone:
 #
@@ -14,11 +14,9 @@ function watch()
     status=$(amixer -D pulse sget Capture | grep -o '\[\(off\|on\)\]$' | head -n1)
     case "$status" in
         "[off]")
-            echo -e "Mic off";;
+            echo -e " Mic off ";;
         "[on]")
-            echo "Mic ON"
-            echo "Mic ON"
-            echo "#FF6666"
+            echo "%{B#ff5555}%{F#222} Mic ON %{B-}%{F-}"
             ;;
         *) echo "mic ?";;
     esac
@@ -27,8 +25,8 @@ function watch()
 function set_capture()
 {
     amixer -q -D pulse sset Capture "$1"
-    # Tell i3blocks to refresh this widget
-    pkill -RTMIN+12 i3blocks
+    # Tell polybar to refresh this widget
+    polybar-msg hook mic 1
 }
 
 case "$1" in

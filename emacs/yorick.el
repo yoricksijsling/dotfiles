@@ -31,6 +31,7 @@
 
 
 (load "~/dotfiles/emacs/languages.el")
+(load "~/dotfiles/emacs/markdown.el")
 (load "~/dotfiles/emacs/haskell.el")
 (load "~/dotfiles/emacs/python.el")
 (load "~/dotfiles/emacs/sql.el")

@@ -172,7 +172,7 @@ bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN
 # Repeat of F1 is disabled in ~/.xsessionrc
 bindsym F1 exec /home/yorick/dotfiles/i3-mic.sh on && pkill -RTMIN+12 i3blocks
 bindsym --release F1 exec /home/yorick/dotfiles/i3-mic.sh off && pkill -RTMIN+12 i3blocks
-bindsym F2 exec /home/yorick/dotfiles/i3-mic.sh on && pkill -RTMIN+12 i3blocks
+bindsym F3 exec /home/yorick/dotfiles/i3-mic.sh on && pkill -RTMIN+12 i3blocks
 
 # Spotify pause with Pause/Break
 bindsym Pause exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause

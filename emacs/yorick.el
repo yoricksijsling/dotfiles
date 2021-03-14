@@ -26,6 +26,7 @@
  '(markdown-language-keyword-face ((t (:inherit shadow))))
  '(markdown-link-face ((t (:inherit link :underline (:color "#adbdeb")))))
  '(markdown-url-face ((t (:inherit shadow))))
+ '(region ((t (:background "navajo white" :distant-foreground "gtk_selection_fg_color"))))
  '(shadow ((t (:foreground "gray60"))))
  '(variable-pitch ((t (:height 1.13 :family "EB Garamond")))))
 

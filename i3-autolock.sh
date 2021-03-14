@@ -8,10 +8,10 @@
 #
 
 # Take a screenshot
-scrot /tmp/screen_locked.png
+scrot -o /tmp/screen_locked.png
 
 # Blur it using one of these methods
-blur_method=$(($RANDOM % 4))
+blur_method=$(($RANDOM % 5))
 case $blur_method in
     # Pixellate 10x
     0) mogrify -scale 10% -scale 1000% /tmp/screen_locked.png ;;
@@ -21,6 +21,8 @@ case $blur_method in
     2) mogrify -virtual-pixel Mirror -spread 20 /tmp/screen_locked.png ;;
     # Edges (via difference eroded and dilated shape). Edge is double the size of kernel.
     3) mogrify -morphology Edge Disk:4 -negate /tmp/screen_locked.png ;;
+    # Pixelate and edges
+    4) mogrify -scale 10% -scale 1000% -morphology Edge Disk:3 -negate /tmp/screen_locked.png ;;
 esac
 
 # DPMS off after 10 seconds. Turns off monitors and spotify.

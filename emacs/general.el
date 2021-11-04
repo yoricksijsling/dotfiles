@@ -46,6 +46,12 @@
 
 
 ;; --------------------------------------------------------------------------------
+;; Which-key
+
+(require 'which-key)
+(setq which-key-idle-delay 1.0)
+(which-key-mode)
+;; --------------------------------------------------------------------------------
 ;; Auto highlight symbols
 
 (setq auto-highlight-symbol-mode-map

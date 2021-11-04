@@ -20,14 +20,16 @@
 #     click-left = /home/yorick/dotfiles/i3-notes-sync.sh run
 #
 
-set -euo pipefail
-
+set -u
 
 STATUS_FILE=/tmp/notes-sync-status
 NOTES_FOLDER="$HOME/notes"
 
 # After changes are made, a sync will occur within this time frame:
 SYNC_DELAY_AFTER_CHANGES="10 second"
+
+# If sync failed for any reason, retry after this time:
+SYNC_RETRY="10 second"
 
 # Regardless of changes, syncs will on this timer:
 SYNC_TIMER="2 minute"
@@ -38,23 +40,27 @@ RUNNING_COLOR='#ffb52a'
 
 function daemon()
 {
-    cd "$NOTES_FOLDER"
+    cd "$NOTES_FOLDER" || exit 7
     local will_sync_at=""
     local change_count
     local early_sync_time
     local now
 
-    will_sync_at=$(date -ud "$SYNC_TIMER" +%s)
-    echo "$(date +%s): Planning timer sync at $will_sync_at"
+    will_sync_at=$(date -ud "1 second" +%s)
+    echo "$(date +%s): Planning initial timer sync at $will_sync_at"
 
     while true
     do
         now=$(date +%s)
         if [[ $now > $will_sync_at ]]; then
             echo "$now: Going for sync"
-            run
-            will_sync_at=$(date -ud "$SYNC_TIMER" +%s)
-            echo "$now: Planning timer sync at $will_sync_at"
+            if run; then
+                will_sync_at=$(date -ud "$SYNC_TIMER" +%s)
+                echo "$now: Succeeded, planning next sync at $will_sync_at"
+            else
+                will_sync_at=$(date -ud "$SYNC_RETRY" +%s)
+                echo "$now: Failed, retrying at $will_sync_at"
+            fi
         else
             change_count=$(change-count)
             echo "$now: change count $change_count"
@@ -86,22 +92,32 @@ function change-count()
     echo "${#gstatus}"
 }
 
+function commits-ahead()
+{
+    local glogahead
+    glogahead=$(git log --oneline origin/master..master)
+    echo "${#glogahead}"
+}
+
 function run()
 {
-    cd "$NOTES_FOLDER"
-    if [[ $(change-count) == 0 ]]; then
-        post-status "$RUNNING_COLOR" "PULL"
-	git pull --ff-only
-        post-status "$UP_COLOR" "NOTES"
-    else
-        git add --all
-        git commit -m "Notes sync"
-        post-status "$RUNNING_COLOR" "PULL"
-	git pull --ff-only
-        post-status "$RUNNING_COLOR" "PUSH"
-        git push
-        post-status "$UP_COLOR" "NOTES"
+    cd "$NOTES_FOLDER" || exit 7
+    if [[ $(change-count) != 0 ]]; then
+        # First pack up all changes in a commit
+        git add --all || return
+        git commit -m "Notes sync" || return
     fi
+
+    post-status "$RUNNING_COLOR" "PULL"
+    git fetch || return
+    git rebase origin/master master || return
+
+    if [[ $(commits-ahead) != 0 ]]; then
+        post-status "$RUNNING_COLOR" "PUSH"
+        git push || return
+    fi
+
+    post-status "$UP_COLOR" "NOTES"
 }
 
 command=$1

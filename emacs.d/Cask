@@ -29,6 +29,8 @@
 (depends-on "ivy-purpose")
 (depends-on "keychain-environment")
 (depends-on "let-alist")
+(depends-on "lsp-jedi")
+(depends-on "lsp-mode")
 (depends-on "magit")
 (depends-on "magit-popup")
 (depends-on "markdown-mode")

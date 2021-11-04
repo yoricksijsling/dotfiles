@@ -51,6 +51,24 @@
 (require 'which-key)
 (setq which-key-idle-delay 1.0)
 (which-key-mode)
+
+
+;; --------------------------------------------------------------------------------
+;; LSP
+
+;; Keybindings: https://emacs-lsp.github.io/lsp-mode/page/keybindings/
+(setq lsp-keymap-prefix "C-c l")  ;; Default is "s-l" but that's my screen lock
+(require 'lsp-mode)
+(add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+
+;; More optional stuff
+;;   lsp-ui
+;;   lsp-ivy
+;;   dap-mode
+
+
+
+
 ;; --------------------------------------------------------------------------------
 ;; Auto highlight symbols
 
@@ -228,6 +246,9 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
 (assq-delete-all 'highlight-indentation-mode minor-mode-alist)
 (assq-delete-all 'outline-minor-mode minor-mode-alist)
 (assq-delete-all 'buffer-face-mode minor-mode-alist)
+(with-eval-after-load 'python
+  (assq-delete-all 'lsp-mode minor-mode-alist))
+(assq-delete-all 'eldoc-mode minor-mode-alist)
 
 
 ;; --------------------------------------------------------------------------------

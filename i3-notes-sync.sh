@@ -26,7 +26,7 @@ STATUS_FILE=/tmp/notes-sync-status
 NOTES_FOLDER="$HOME/notes"
 
 # After changes are made, a sync will occur within this time frame:
-SYNC_DELAY_AFTER_CHANGES="10 second"
+SYNC_DELAY_AFTER_CHANGES="30 second"
 
 # If sync failed for any reason, retry after this time:
 SYNC_RETRY="10 second"
@@ -46,7 +46,7 @@ function daemon()
     local early_sync_time
     local now
 
-    will_sync_at=$(date -ud "1 second" +%s)
+    will_sync_at=$(date -ud "3 second" +%s)
     echo "$(date +%s): Planning initial timer sync at $will_sync_at"
 
     while true

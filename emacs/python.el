@@ -116,7 +116,7 @@
 (add-hook 'python-mode-hook 'lsp)
 
 (add-to-list 'lsp-disabled-clients 'pyls)
-(add-to-list 'lsp-enabled-clients 'jedi)
+;; (add-to-list 'lsp-enabled-clients 'jedi)  ;; By default all clients are considered enabled, so keep this at nil
 
 ;; Jedi can give us diagnostics about syntax errors, these are reported through
 ;; the lsp-diagnostics minor mode

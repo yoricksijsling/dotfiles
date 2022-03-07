@@ -66,6 +66,9 @@
 ;;   lsp-ivy
 ;;   dap-mode
 
+(require 'yasnippet)  ;; Necessary to make the placeholders in lsp company autocompletions work
+(yas-global-mode 1)
+
 
 
 
@@ -249,6 +252,7 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
 (with-eval-after-load 'python
   (assq-delete-all 'lsp-mode minor-mode-alist))
 (assq-delete-all 'eldoc-mode minor-mode-alist)
+(assq-delete-all 'yas-minor-mode minor-mode-alist)
 
 
 ;; --------------------------------------------------------------------------------

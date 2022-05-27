@@ -7,6 +7,22 @@
 
 
 ;;--------------------------------------------------------------------------------
+;; Rust
+
+;; There's default rust integration in flycheck, this package is required though
+;; to set it up properly.
+;; (require 'flycheck-rust)
+;; (with-eval-after-load 'rust-mode
+;;   (add-hook 'flycheck-mode-hook #' flycheck-rust-setup))
+;; (add-hook 'rust-mode-hook 'flycheck-mode)
+
+(require 'rustic)
+(require 'lsp-rust)  ;; Included in lsp-mode package
+
+(setq lsp-eldoc-hook nil)  ;; documentation shown in the minibuffer
+
+
+;;--------------------------------------------------------------------------------
 ;; XML
 
 (require 'hideshow)

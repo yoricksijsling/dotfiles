@@ -28,15 +28,13 @@
 
 (setq markdown-enable-wiki-links t)
 
-;; Don't replace spaces. This matches GitJournal, Obsidian,
-;; and Gollum wiki (https://github.com/gollum/gollum/wiki#tags)
-(setq markdown-link-space-sub-char " ")
-
-;; To keep things simple, all notes are in the root directory. Just like wikipedia.
-(add-hook 'gfm-mode-hook
-          (lambda ()
-            ;; GFM sets this variable but we don't want it
-            (setq markdown-wiki-link-search-subdirectories nil)))
+;; By default this function does complicated stuff, but we don't need all that:
+;;   * We keep all our notes in the root directory (like a wiki), so we don't
+;;     have to search in sub/parent/project directories.
+;;   * We don't replace spaces. This matches GitJournal, Obsidian, and Gollum
+;;     wiki (https://github.com/gollum/gollum/wiki#tags)
+(defun markdown-convert-wiki-link-to-filename (name)
+  (concat name ".md"))
 
 ;; Pushing and popping for wiki links
 (define-key markdown-mode-map (kbd "M-.") 'markdown-follow-wiki-link-at-point)

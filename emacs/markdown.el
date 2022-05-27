@@ -54,14 +54,15 @@ See `markdown-wiki-link-p' and `markdown-follow-wiki-link'."
     (user-error "Point is not at a Wiki Link")))
 
 
-
 ;;--------------------------------------------------------------------------------
 ;; Completion for wiki links
 
 (add-hook 'gfm-mode-hook
           (lambda ()
             (add-to-list (make-local-variable 'company-backends)
-                         'company-markdown-wiki-links)))
+                         'company-markdown-wiki-links)
+            (company-mode t)
+            ))
 
 (defun company-markdown-wiki-links (command &optional arg &rest ignored)
   "Company mode completions for markdown wiki links"

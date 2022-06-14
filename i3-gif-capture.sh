@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# set -euxo pipefail
+set -euxo pipefail
 
 TMPFILE="$(mktemp -t screencast-XXXXXXX).mkv"
-OUTPUT="$HOME/Pictures/Screencasts/$(date +%F-%H-%M-%S)"
+OUTPUT="$HOME/Videos/captured/$(date +%F-%H-%M-%S)"
 
 read -r X Y W H < <(slop --noopengl --format "%x %y %w %h"; echo "")
-ffmpeg -f x11grab -s "${W}x$H" -i ":0.0+$X,$Y" "$TMPFILE"
+# sleep 1
+ffmpeg -f x11grab -s "${W}x$H" -i "$DISPLAY.0+$X,$Y" "$TMPFILE" || echo "done"
 
 notify-send 'generating palette'
 ffmpeg -y -i "$TMPFILE"  -vf fps=10,palettegen /tmp/palette.png

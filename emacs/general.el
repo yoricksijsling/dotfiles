@@ -44,6 +44,26 @@
 (require 'counsel-projectile)
 (counsel-projectile-mode)
 
+;; https://github.com/bbatsov/projectile/issues/1777#issuecomment-1170113133
+(setq projectile-globally-ignored-directories
+  '(".idea"
+    ".vscode"
+    ".ensime_cache"
+    ".eunit"
+    ".git"
+    ".hg"
+    ".fslckout"
+    "_FOSSIL_"
+    ".bzr"
+    "_darcs"
+    ".pijul"
+    ".tox"
+    ".svn"
+    ".stack-work"
+    ".ccls-cache"
+    ".cache"
+    ".clangd"))
+
 
 ;; --------------------------------------------------------------------------------
 ;; Which-key

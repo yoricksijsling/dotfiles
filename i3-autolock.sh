@@ -7,23 +7,25 @@
 #     xss-lock -l -- /home/yorick/dotfiles/i3-autolock.sh
 #
 
-# Take a screenshot
-scrot -o /tmp/screen_locked.png
+# Take a screenshot (bmp is faster than png)
+scrot -o /tmp/screen_locked.bmp
 
 # Blur it using one of these methods
 blur_method=$(($RANDOM % 5))
 case $blur_method in
     # Pixellate 10x
-    0) mogrify -scale 10% -scale 1000% /tmp/screen_locked.png ;;
+    0) blur_options="-scale 10% -scale 1000%" ;;
     # Blur
-    1) mogrify -virtual-pixel Mirror -scale 50% -blur 0x10 -scale 200% /tmp/screen_locked.png ;;
+    1) blur_options="-virtual-pixel Mirror -scale 50% -blur 0x10 -scale 200%" ;;
     # Random pixels nearby
-    2) mogrify -virtual-pixel Mirror -spread 20 /tmp/screen_locked.png ;;
+    2) blur_options="-virtual-pixel Mirror -spread 20" ;;
     # Edges (via difference eroded and dilated shape). Edge is double the size of kernel.
-    3) mogrify -morphology Edge Disk:4 -negate /tmp/screen_locked.png ;;
+    3) blur_options="-morphology Edge Disk:4 -negate" ;;
     # Pixelate and edges
-    4) mogrify -scale 10% -scale 1000% -morphology Edge Disk:3 -negate /tmp/screen_locked.png ;;
+    4) blur_options="-scale 10% -scale 1000% -morphology Edge Disk:3 -negate" ;;
 esac
+# Storing as bmp is faster, but i3lock needs a png. The lower compression level helps at least.
+convert /tmp/screen_locked.bmp $blur_options -define png:compression-level=0 /tmp/screen_locked.png
 
 # DPMS off after 10 seconds. Turns off monitors and spotify.
 xset dpms 0 0 10

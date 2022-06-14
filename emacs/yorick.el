@@ -6,11 +6,6 @@
 (load "~/dotfiles/emacs/essentials.el")
 (load "~/dotfiles/emacs/general.el")
 
-;; Pallet to maintain entries in ~/.emacs.d/Cask automatically
-(require 'pallet)
-(pallet-mode t)
-
-
 ;; Changing these faces via customize still works, but it will duplicate all the
 ;; settings to init.el. After a change, copy the entire `custom-set-faces` call
 ;; from init.el to here.
@@ -28,7 +23,10 @@
  '(markdown-url-face ((t (:inherit shadow))))
  '(region ((t (:background "navajo white" :distant-foreground "gtk_selection_fg_color"))))
  '(shadow ((t (:foreground "gray60"))))
- '(variable-pitch ((t (:height 0.8 :family "arial"))))
+ ;; '(variable-pitch ((t (:height 0.8 :family "arial"))))
+ '(variable-pitch ((t (:height 0.8 :family "Liberation Sans"))))
+ ;; '(variable-pitch ((t (:height 0.8 :family "Deja Vu Sans"))))
+ ;; '(variable-pitch ((t (:height 0.8 :family "Nimbus Sans"))))
  )
 
 

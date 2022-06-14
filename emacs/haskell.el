@@ -137,7 +137,7 @@ To regenerate the database for a stack project I use 'hoogle-build.sh'."
       (while (re-search-forward import-regex nil t)
         (let* ((import (match-string 0))
                (notice (concat "importing " (match-string 3) "\n"))
-               (cmd (haskell-interactive-mode-new-multi-line process import)))
+               (cmd (haskell-interactive-mode-multi-line import)))
           (haskell-process-queue-command
            process
            (make-haskell-command
@@ -213,7 +213,7 @@ If the region is unset, the current declaration will be used."
          (process (haskell-interactive-process))
          (notice (concat (string-join names "\n") "\n"))
          (expr (buffer-substring-no-properties begin end))
-         (cmd (haskell-interactive-mode-new-multi-line process expr))
+         (cmd (haskell-interactive-mode-multi-line expr))
          )
 
     ;; Following construction is very similar to the send-import one. Abstract away?
@@ -258,24 +258,25 @@ If the region is unset, the current declaration will be used."
 haskell files throughout the project. Depends on projectile and
 ag."
   (let* ((ignored (mapconcat (lambda (i)
-                               (concat "--ignore "
-                                       (shell-quote-argument i)
-                                       " "))
-                             (append (projectile-ignored-files-rel)
+                               (concat "--glob !" (shell-quote-argument i)))
+                             (append (projectile--globally-ignored-file-suffixes-glob)
+                                     (projectile-ignored-files-rel)
                                      (projectile-ignored-directories-rel))
-                             ""))
-         (command (format (concat "ag "
+                             " "))
+         (command (format (concat "rg "
                                   ignored
-                                  " --nocolor"
-                                  " --nogroup"
-                                  " --nofilename"
-                                  " --nobreak"
+                                  " --color never"
+                                  " --no-heading"
+                                  " --no-filename"
                                   " --ignore-case"
-                                  " --file-search-regex .*hs$"
+                                  " --glob *hs"
                                   " -- ")))
          (regex (concat "^import .*"
                         (s-join ".*" (-map (lambda (w)
-                                             (concat "\\b" w)
+                                             (concat "\\b"
+                                                     (string-replace "(" ""
+                                                                     (string-replace ")" ""
+                                                                                     w)))
                                              )
                                            (cdr (split-string arg))))))
          (command-list (append (split-string command) (list regex)))

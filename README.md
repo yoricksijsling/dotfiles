@@ -1,3 +1,21 @@
+# Features
+
+A quick overview:
+* Everything is configured through home manager, config starts in [home.nix](./hm/home.nix)
+* [i3 window manager](./hm/i3.nix) with:
+  * [automatic locking](./i3-autolock.sh) and [suspending](./autosuspend.sh)
+  * [push-to-speak microphone toggle](./i3-mic.sh)
+  * [seamless emacs navigation integration](i3-navigate-emacs.sh)
+  * [automatic synchronisation of notes repository](i3-notes-sync.sh)
+  * [screenshot](i3-gif-capture.sh) and [video capture](i3-screen-capture.sh)
+  * picom to prevent screen tearing
+* Home manager config is exposed [as a nix flake](./hm/flake.nix),
+  so that I can extend it in specific environments without including that configuration in this repository
+* [git configuration](./hm/git.nix) through home manager
+* [firefox](./hm/firefox.nix) through home manager, with actually working webgl
+* [polybar](./hm/polybar.nix) through home manager
+* [emacs](./hm/emacs.nix) with all packages through home manager, configuration in [./emacs](./emacs)
+
 # Setup
 
 This is how i need to set up my stuff on new systems.

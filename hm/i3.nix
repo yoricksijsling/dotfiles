@@ -271,6 +271,9 @@ xinput --set-prop 'DLL0945:00 04F3:311C Touchpad' 'libinput Natural Scrolling En
         exec_always --no-startup-id ${dotfiles}/i3-start-polybar.sh
         # exec_always --no-startup-id polybar-msg cmd restart
 
+        # Ibus is started by default for input methods, emoji support and such. I don't want it.
+        exec --no-startup-id ibus exit
+
         # Lock via screensaver activation
         bindsym Mod4+l exec xset s activate
 

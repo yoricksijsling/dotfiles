@@ -3,15 +3,30 @@
     # nixpkgs.url = "flake:nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "flake:nixpkgs/nixos-22.11";
 
-    # home-manager.url = "github:nix-community/home-manager";
-    home-manager.url = "github:nix-community/home-manager/release-22.11";
-    # Follow existing nixpkgs for better caching. This can break things if your
-    # versions don't match! In our case we use version 22.11 for both home
-    # manager and nixpkgs.
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
 
-    nixgl.url = "github:guibou/nixGL";
-    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      # url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-22.11";
+
+      # Follow existing nixpkgs for better caching. This can break things if your
+      # versions don't match! In our case we use version 22.11 for both home
+      # manager and nixpkgs.
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
+    };
+
+    nixgl = {
+      url = "github:guibou/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let

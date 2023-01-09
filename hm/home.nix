@@ -186,5 +186,5 @@ notify_when_long_running_commands_finish_install
           # Use picom compositor to prevent screen tearing in i3
           picom = self.nixGLWrapper super.picom;
         });
-    in [ inputs.nixgl.overlay more ];
+    in [ inputs.nixgl.overlay inputs.emacs-overlay.overlay more ];
 }

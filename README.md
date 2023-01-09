@@ -36,8 +36,9 @@ For Channable setup: This all goes _after_ the devmachine provisioning.
 Home manager is installed via the home manager config.
 To bootstrap it, follow instructions at https://nix-community.github.io/home-manager/index.html#ch-nix-flakes
 
-Example config:
+Example configs:
 https://github.com/Misterio77/nix-config/blob/main/flake.nix
+https://github.com/bbigras/nix-config/
 
 ## Use home manager config
 

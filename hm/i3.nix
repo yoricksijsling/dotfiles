@@ -81,7 +81,7 @@
   };
 
   xsession = {
-    enable = true;  # ~/.Xsession gets managed by home-manager
+    enable = true;  # Take over ~/.xsession and ~/.xprofile
 
     initExtra = ''
 # Dvorak, with caps lock as super key

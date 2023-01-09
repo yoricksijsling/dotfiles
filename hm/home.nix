@@ -89,6 +89,9 @@ in
       # Google Cloud SDK complains when it doesn't have numpy, so make sure it finds it.
       CLOUDSDK_PYTHON = "${python3WithPackages}/bin/python";
       CLOUDSDK_PYTHON_SITEPACKAGES=1;
+
+      # Set this early to prevent complaints about 'environment variable $SSH_AUTH_SOCK not set'.
+      SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
     };
 
     sessionPath = [

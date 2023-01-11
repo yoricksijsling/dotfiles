@@ -173,6 +173,9 @@ notify_when_long_running_commands_finish_install
       # profileExtra = "";
     };
 
+    # Use direnv to automatically load environments via .envrc files. Bash integration is enabled by default.
+    direnv.enable = true;
+
   };
 
   nixpkgs.overlays =

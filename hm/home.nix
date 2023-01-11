@@ -47,6 +47,7 @@ in
       pkgs.pinta
       pkgs.libreoffice
       pkgs.light  # For easy brightness adjustment
+      pkgs.chromium
 
       # I'm using a globally installed stack for emacs (would be better to take
       # it from the local nix env..)

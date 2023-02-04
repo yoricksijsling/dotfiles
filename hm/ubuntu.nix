@@ -1,19 +1,6 @@
 { config, pkgs, inputs, ... }:
 
-let
-  python3WithPackages = pkgs.python3.withPackages (ps: [
-    ps.jedi-language-server  # Used in emacs with lsp
-    ps.numpy  # Used by google cloud
-  ]);
-in
 {
-  imports = [
-    ./i3.nix
-    ./emacs.nix
-    ./git.nix
-    ./firefox.nix
-  ];
-
   # Necessary to set up some basic stuff for non-nixos installs,
   # including modifications to XDG_DATA_DIRS and XCURSOR_PATH so that
   # home-manager installed applications can be found.
@@ -26,12 +13,8 @@ in
   # nixpkgs.config.allowUnfree = true;
 
   home = {
-    username = "yorick";
-    homeDirectory = "/home/yorick";
-
     packages = [
       pkgs.arandr  # GUI for xrandr (monitor management)
-      pkgs.gimp
       pkgs.imagemagick
       pkgs.jq  # Used in i3-navigate-emacs.sh
       pkgs.notify-osd  # So that notify-send actually works
@@ -44,33 +27,6 @@ in
       pkgs.spotify # Temporarily disabled because allowUnfree isn't being picked up??
       pkgs.undistract-me  # Notifications for long-running commands
       pkgs.xclip  # Used in i3-screen-capture.sh and pbcopy/pbpaste aliases
-      pkgs.pinta
-      pkgs.libreoffice
-      pkgs.light  # For easy brightness adjustment
-      pkgs.chromium
-
-      # I'm using a globally installed stack for emacs (would be better to take
-      # it from the local nix env..)
-      pkgs.haskellPackages.stack
-
-      # pkgs.haskellPackages.ghcid
-      # pkgs.haskellPackages.hlint
-      # pkgs.haskellPackages.profiteur
-      # pkgs.haskellPackages.stylish-haskell
-      # pkgs.haskellPackages.ghc-prof-flamegraph
-      # pkgs.haskellPackages.cabal-install
-      pkgs.haskellPackages.cabal2nix
-      # pkgs.haskellPackages.ghc
-
-      python3WithPackages
-
-      # At the moment i3lock from home-manager doesn't seem to unlock
-      # properly, I'm installing i3lock and xss-lock with apt instead.
-      # pkgs.i3lock
-      # pkgs.xss-lock
-
-      # nixGL as defined below in the overlay
-      pkgs.nixgl.nixGLIntel
 
       # Fonts. Check https://github.com/polybar/polybar/wiki/Fonts for font debugging
       pkgs.comic-relief  # Comic Sans MS
@@ -81,16 +37,6 @@ in
     ];
 
     sessionVariables = {
-      # I probably did something wrong, but by default home-manager
-      # sets the NIX_PATH to use the channels of the root user. I want
-      # the nixpkgs and home-manager channels that I've set up for my
-      # own user.
-      NIX_PATH = "$HOME/.nix-defexpr/channels";
-
-      # Google Cloud SDK complains when it doesn't have numpy, so make sure it finds it.
-      CLOUDSDK_PYTHON = "${python3WithPackages}/bin/python";
-      CLOUDSDK_PYTHON_SITEPACKAGES=1;
-
       # Set this early to prevent complaints about 'environment variable $SSH_AUTH_SOCK not set'.
       SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
     };
@@ -178,20 +124,5 @@ notify_when_long_running_commands_finish_install
 
   };
 
-  nixpkgs.overlays =
-    let more = (self: super: {
-
-          # nixGLWrapper taken from https://github.com/crtschin/dotfiles/blob/master/work.nix
-          # This wrapper still relies on the drivers that you have installed on your system, see README.
-
-          # It looks like I specifically need nixGLIntel on my work laptop.
-          nixGLWrapper = program: pkgs.writeShellScriptBin program.pname ''
-            #!/bin/sh
-            ${self.nixgl.nixGLIntel}/bin/nixGLIntel ${program}/bin/${program.pname} "$@"
-          '';
-
-          # Use picom compositor to prevent screen tearing in i3
-          picom = self.nixGLWrapper super.picom;
-        });
-    in [ inputs.nixgl.overlay inputs.emacs-overlay.overlay more ];
+  nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 }

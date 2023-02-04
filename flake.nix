@@ -47,14 +47,25 @@
           # The dotfiles argument always points to the flake root.
           dotfiles = self;
         };
-        modules = [ ./hm/home.nix ] ++ extraModules;
+        modules = [ ./hm/channable-lt.nix ] ++ extraModules;
       };
     in
       {
         inherit makeHomeConfiguration;
 
-        # For convenience we also export a home configuration without extra
-        # modules. It can be used directly by home manager.
-        homeConfigurations.default = makeHomeConfiguration {};
+        homeConfigurations = {
+          # For convenience we also export a home configuration without extra
+          # modules. It can be used directly by home manager.
+          channable-lt = makeHomeConfiguration {};
+
+          personal-lt = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = {
+              inherit inputs;
+              dotfiles = self;
+            };
+            modules = [ ./hm/personal-lt.nix ];
+          };
+        };
       };
 }

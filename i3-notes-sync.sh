@@ -40,7 +40,7 @@ RUNNING_COLOR='#ffb52a'
 
 function daemon()
 {
-    cd "$NOTES_FOLDER" || exit 7
+    cd "$NOTES_FOLDER" || { post-status "$RUNNING_COLOR" "NO NOTES FOLDER" && exit 7; }
     local will_sync_at=""
     local change_count
     local early_sync_time
@@ -101,7 +101,7 @@ function commits-ahead()
 
 function run()
 {
-    cd "$NOTES_FOLDER" || exit 7
+    cd "$NOTES_FOLDER" || { post-status "$RUNNING_COLOR" "NO NOTES FOLDER" && exit 7; }
     if [[ $(change-count) != 0 ]]; then
         # First pack up all changes in a commit
         git add --all || return
@@ -110,7 +110,8 @@ function run()
 
     post-status "$RUNNING_COLOR" "PULL"
     git fetch || return
-    git rebase origin/master master || return
+    git rebase origin/master master \
+        || { post-status "$RUNNING_COLOR" "REBASE FAIL" && git rebase --abort && exit 8; }
 
     if [[ $(commits-ahead) != 0 ]]; then
         post-status "$RUNNING_COLOR" "PUSH"

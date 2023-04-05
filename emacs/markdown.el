@@ -84,7 +84,7 @@ See `markdown-wiki-link-p' and `markdown-follow-wiki-link'."
 ;; --------------------------------------------------------------------------------
 ;; Scratch notes
 
-(defun scratch ()
+(defun note-scratch ()
   (interactive)
   (let ((basename (format-time-string "/home/yorick/notes/%Y-%m-%d scratch%%i.md"))
         (i 0))
@@ -99,4 +99,23 @@ See `markdown-wiki-link-p' and `markdown-follow-wiki-link'."
         )
       (pop-to-buffer buffer)
       ))
+  )
+
+(defun note-autorename ()
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (let ((firstline (buffer-substring-no-properties (point) (line-end-position))))
+      (when (string= "# " (substring firstline 0 2))
+        (let* ((title (s-replace-regexp "[^a-z0-9-_]+" " " (downcase (substring firstline 2 nil))))
+               (old-filename (buffer-file-name))
+               (dir (file-name-directory old-filename))
+               (old-nondir (file-name-nondirectory old-filename))
+               (re "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] \\(.*\\)\.md")
+               (new-nondir (s-replace-regexp re title old-nondir nil nil 1)))
+          (magit-file-rename (s-concat dir old-nondir) (s-concat dir new-nondir))
+          )
+        )
+      )
+    )
   )

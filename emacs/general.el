@@ -21,6 +21,18 @@
 
 
 ;; --------------------------------------------------------------------------------
+;; Poor mans DPI change
+
+(defun load-home ()
+  (interactive)
+  (custom-set-faces '(default ((t (:height 105))))))
+
+(defun load-office ()
+  (interactive)
+  (custom-set-faces '(default ((t (:height 128))))))
+
+
+;; --------------------------------------------------------------------------------
 ;; Project navigation
 
 (require 'projectile)

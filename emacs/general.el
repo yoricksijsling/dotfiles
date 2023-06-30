@@ -176,6 +176,7 @@
 (require 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
 (setq magit-bury-buffer-function 'magit-mode-quit-window) ;; Default was 'magit-restore-window-configuration
+(setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))  ;; Absolute date in logs. Default was (t age magit-log-margin-width t 18)
 
 (defun my-git-relevant-branches-for-rev (rev)
   (-non-nil (list rev

@@ -230,20 +230,19 @@ See URL `http://mypy-lang.org/'."
 python files throughout the project. Depends on projectile and
 ag."
   (let* ((ignored (mapconcat (lambda (i)
-                               (concat "--ignore "
-                                       (shell-quote-argument i)
-                                       " "))
-                             (append (projectile-ignored-files-rel)
+                               (concat "--glob !"
+                                       (shell-quote-argument i)))
+                             (append (projectile--globally-ignored-file-suffixes-glob)
+                                     (projectile-ignored-files-rel)
                                      (projectile-ignored-directories-rel))
-                             ""))
-         (command (format (concat "ag "
+                             " "))
+         (command (format (concat "rg "
                                   ignored
-                                  " --nocolor"
-                                  " --nogroup"
-                                  " --nofilename"
-                                  " --nobreak"
+                                  " --color never"
+                                  " --no-heading"
+                                  " --no-filename"
                                   " --ignore-case"
-                                  " --file-search-regex .*py$"
+                                  " --glob *.py"
                                   " -- ")))
          (regex (concat "^(from|import) .*"
                         (s-join ".*" (-map (lambda (w)
@@ -251,11 +250,7 @@ ag."
                                              )
                                            (cdr (split-string arg))))))
          (command-list (append (split-string command) (list regex)))
-         (default-directory (projectile-project-root))  ;; For process-lines
-         (result (condition-case nil
-                     (apply 'process-lines command-list)
-                   ;; Error handler
-                   (error nil)
-                     ))
+         (result (let ((default-directory (projectile-project-root)))
+                   (apply 'process-lines command-list)))
          )
     (cl-remove-duplicates result :test 'equal)))

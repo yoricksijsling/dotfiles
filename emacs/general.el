@@ -265,8 +265,6 @@ Does not change when using `with-temporary-buffer' or `with-selected-window'.
          ;; sml/pre-modes-separator
          mode-line-modes       ;; Major mode and minor modes
          mode-line-misc-info   ;; Would normally includes venv
-         (:eval (when (eq (selected-window) my-selected-window)
-                  pyvenv-virtual-env-name))
          mode-line-end-spaces
          )))
 

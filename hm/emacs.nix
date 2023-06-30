@@ -38,6 +38,7 @@ in {
         dash
         ein
         elpy
+        envrc
         epl
         f
         find-file-in-project
@@ -69,7 +70,6 @@ in {
         popup
         powerline
         projectile
-        pyvenv
         rich-minority
         rustic
         s

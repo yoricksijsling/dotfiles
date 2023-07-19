@@ -71,6 +71,18 @@
   }
 }
 
+@-moz-document domain(dash.channable.com) {
+  .box, .table, .list-group-item {
+    background-color: ##ffffd0 !important;
+  }
+  .content-wrapper {
+    background-color: #e66 !important;
+  }
+  .table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: #f9f9c0 !important;
+  }
+}
+
 @-moz-document domain(localhost) {
   .top-bar, .top-bar-row {
     background-color: #88ee88 !important;

@@ -23,7 +23,7 @@
       pkgs.scrot  # Used in i3-autolock.sh
       pkgs.shellcheck
       pkgs.slop  # Used in i3-gif-capture.sh
-      pkgs.ffmpeg  # Used in i3-gif-capture.sh
+      pkgs.ffmpeg_6-full  # Used in i3-gif-capture.sh, use full because we need --with-xcblib
       pkgs.spotify # Temporarily disabled because allowUnfree isn't being picked up??
       pkgs.undistract-me  # Notifications for long-running commands
       pkgs.xclip  # Used in i3-screen-capture.sh and pbcopy/pbpaste aliases

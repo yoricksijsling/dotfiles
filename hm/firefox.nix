@@ -104,6 +104,28 @@
     background-image: none !important;
   }
 }
+
+@-moz-document domain(chat.channable.com) {
+    :root {
+        --emoji-size: min(32em, 128px);
+    }
+
+    img.Reaction__emoji:hover, span.emoticon:hover {
+        min-width: var(--emoji-size) !important;
+        min-height: var(--emoji-size) !important;
+
+        width: var(--emoji-size) !important;
+        height: var(--emoji-size) !important;
+
+        max-width: var(--emoji-size) !important;
+        max-height: var(--emoji-size) !important;
+    }
+
+    button.Reaction:hover {
+        min-height: 24px !important;
+        height: auto !important;
+    }
+}
 '';
       };
     };

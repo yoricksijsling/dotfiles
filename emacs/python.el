@@ -18,6 +18,12 @@
 (setq lsp-jedi-diagnostics-did-open t)
 (setq lsp-jedi-diagnostics-did-save t)
 
+;; Don't use a global python3, because direnv may set one locally for the project. By setting this
+;; lambda, the python3 executable will be determined when the jedi-language-server starts. This will
+;; ensure that the right python executable will be used, including all the python dependencies.
+(lsp-register-custom-settings '(("jedi.workspace.environmentPath" (lambda () (executable-find "python3")) t)))
+
+
 ;; We can get lsp-diagnostics to communicate diagnostics on change (without
 ;; saving), but only when idle-change is in the
 ;; flycheck-check-syntax-automatically list.
@@ -30,13 +36,15 @@
 ;; Replace the 'python3' command for these checkers with the 'python3' from
 ;; virtualenv, so that it still works if the checker runs after we left the
 ;; buffer.
-(add-hook 'pyvenv-post-activate-hooks
-          (lambda ()
-            (let ((python3 (executable-find "python3")))
-              ;; (message "setting python3 executable in hook %s" python3)
-              (flycheck-set-checker-executable 'python-pylint (executable-find "python3"))
-              (flycheck-set-checker-executable 'python-mypy (executable-find "python3"))
-              )))
+;; (add-hook 'pyvenv-post-activate-hooks
+;;           (lambda ()
+;;             (let ((python3 (executable-find "python3")))
+;;               ;; (message "setting python3 executable in hook %s" python3)
+;;               (flycheck-set-checker-executable 'python-pylint python)
+;;               (flycheck-set-checker-executable 'python-mypy python)
+;;               )))
+
+
 
 ;; --------------------------------------------------------------------------------
 ;; Mypy checker in flycheck

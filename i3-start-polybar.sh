@@ -4,10 +4,10 @@
 # Best to call this from your i3 config.
 
 # Terminate already running bar instances
-pkill polybar
+polybar-msg cmd quit
 
 # Wait until the processes have been shut down
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+# while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 IFS=$'\n'       # make newlines the only separator
 for m in $(polybar --list-monitors); do
@@ -16,8 +16,10 @@ for m in $(polybar --list-monitors); do
   if [[ "$m" =~ \(primary\)$ ]]; then
     # echo "$monitor primary"
     MONITOR=$monitor polybar --reload primary &
+    sleep 1
   else
     # echo "$monitor non-primary"
     MONITOR=$monitor polybar --reload non-primary &
+    sleep 1
   fi
 done

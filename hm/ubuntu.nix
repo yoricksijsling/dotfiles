@@ -27,6 +27,7 @@
       pkgs.spotify # Temporarily disabled because allowUnfree isn't being picked up??
       pkgs.undistract-me  # Notifications for long-running commands
       pkgs.xclip  # Used in i3-screen-capture.sh and pbcopy/pbpaste aliases
+      pkgs.moreutils  # Bunch of stuff including 'ts'
 
       # Fonts. Check https://github.com/polybar/polybar/wiki/Fonts for font debugging
       pkgs.comic-relief  # Comic Sans MS

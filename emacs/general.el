@@ -81,7 +81,7 @@
 ;; Which-key
 
 (require 'which-key)
-(setq which-key-idle-delay 1.0)
+(setq which-key-idle-delay 0.1)
 (which-key-mode)
 
 

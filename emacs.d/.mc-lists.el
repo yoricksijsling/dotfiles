@@ -15,6 +15,8 @@
         elpy-nav-indent-shift-left
         elpy-nav-indent-shift-right
         end-of-visual-line
+        eval-and-replace
+        eval-last-sexp
         fill-paragraph
         haskell-indentation-common-electric-command
         haskell-interactive-mode-space

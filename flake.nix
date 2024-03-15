@@ -1,23 +1,22 @@
 {
   inputs = {
     # nixpkgs.url = "flake:nixpkgs/nixpkgs-unstable";
-    nixpkgs.url = "flake:nixpkgs/nixos-23.05";
+    nixpkgs.url = "flake:nixpkgs/nixos-23.11";
 
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       # url = "github:nix-community/home-manager";
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
 
       # Follow existing nixpkgs for better caching. This can break things if your
-      # versions don't match! In our case we use version 23.05 for both home
+      # versions don't match! In our case we use version 23.11 for both home
       # manager and nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "flake-utils";
     };
 
     nixgl = {
-      url = "github:guibou/nixGL";
+      url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

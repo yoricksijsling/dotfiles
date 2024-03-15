@@ -30,7 +30,7 @@ in
 
       # pkgs.haskellPackages.ghcid
       pkgs.haskellPackages.hlint
-      pkgs.haskellPackages.profiteur
+      # pkgs.haskellPackages.profiteur
       pkgs.haskellPackages.stylish-haskell
       pkgs.haskellPackages.ghc-prof-flamegraph
       pkgs.haskellPackages.cabal-install

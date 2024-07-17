@@ -47,6 +47,10 @@ in
       # properly, I'm installing i3lock and xss-lock with apt instead.
       # pkgs.i3lock
       # pkgs.xss-lock
+
+      # Profiling, see notes
+      pkgs.flamegraph
+      pkgs.linuxKernel.packages.linux_5_15.perf
     ];
 
     sessionVariables = {

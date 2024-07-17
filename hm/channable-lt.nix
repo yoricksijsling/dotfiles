@@ -28,6 +28,8 @@ in
       pkgs.light  # For easy brightness adjustment
       pkgs.chromium
 
+      pkgs.nix-output-monitor  # Use nom instead of nix to get a nicer output
+
       # pkgs.haskellPackages.ghcid
       pkgs.haskellPackages.hlint
       # pkgs.haskellPackages.profiteur

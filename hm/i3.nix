@@ -322,9 +322,9 @@ xinput --set-prop 'DLL0945:00 04F3:311C Touchpad' 'libinput Natural Scrolling En
         # figure out the class)
         for_window [] border pixel 2
         # Firefox browser has window_role="browser", firefox inspector has window_role="toolbox"
-        for_window [class="Firefox" window_role="browser"] border pixel 0
-        # Firefox 98.0 has changed the class name to lower case
         for_window [class="firefox" window_role="browser"] border pixel 0
+        for_window [class="firefox" window_role="alert"] floating enable
+        no_focus [class="firefox" window_role="alert"]
         for_window [class="Spotify"] border pixel 0
         for_window [class="Emacs"] border pixel 0
       '';

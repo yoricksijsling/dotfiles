@@ -1,7 +1,24 @@
 { config, pkgs, inputs, ... }:
 
 let
-  python3WithPackages = pkgs.python3.withPackages (ps: [
+
+  # Example python overlay:
+  # pythonOverlay = self: super: {
+  #   jedi-language-server = super.jedi-language-server.overridePythonAttrs rec {
+  #     pname = "jedi-language-server";
+  #     # Bumping version to get support for pydantic v2
+  #     version = "0.41.3";
+  #     src = pkgs.fetchFromGitHub {
+  #       owner = "pappasam";
+  #       repo = pname;
+  #       rev = "refs/tags/v${version}";
+  #       hash = "sha256-+k4WOoEbVe7mlPyPj0ttBM+kmjq8V739yHi36BDYK2U=";
+  #     };
+  #   };
+  # };
+  # python = pkgs.python311.override { packageOverrides = pythonOverlay; };
+  python = pkgs.python3;
+  pythonWithPackages = python.withPackages (ps: [
     ps.jedi-language-server  # Used in emacs with lsp
     ps.numpy  # Used by google cloud
   ]);
@@ -43,7 +60,7 @@ in
       # it from the local nix env..)
       pkgs.haskellPackages.stack
 
-      python3WithPackages
+      pythonWithPackages
 
       # At the moment i3lock from home-manager doesn't seem to unlock
       # properly, I'm installing i3lock and xss-lock with apt instead.
@@ -63,7 +80,7 @@ in
       NIX_PATH = "$HOME/.nix-defexpr/channels";
 
       # Google Cloud SDK complains when it doesn't have numpy, so make sure it finds it.
-      CLOUDSDK_PYTHON = "${python3WithPackages}/bin/python";
+      CLOUDSDK_PYTHON = "${pythonWithPackages}/bin/python";
       CLOUDSDK_PYTHON_SITEPACKAGES=1;
     };
   };

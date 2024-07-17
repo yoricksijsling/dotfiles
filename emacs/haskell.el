@@ -33,7 +33,15 @@
         ;; Default included no-build, but i want to build all my stuff
         "--no-load" ;; Don't load modules initially, just wait for user
         ))
+(setq haskell-process-args-cabal-repl
+      '("--ghc-option=-ferror-spans" ;; -ddump-splices -ddump-to-file"
+        ;; "--bench" "--test" ;; Include load paths for testing and benchmark packages
+        ;; Default included no-build, but i want to build all my stuff
+        ;; "--repl-no-load"  ;; Don't load modules initially, just wait for user
+        ))
 (setq haskell-interactive-popup-errors nil)
+;; If the build is broken, I don't want it to keep asking for restarts
+(setq haskell-process-suggest-restart nil)
 
 (define-key haskell-interactive-mode-map (kbd "RET") 'my-haskell-interactive-mode-return)
 (defun my-haskell-interactive-mode-return ()

@@ -56,9 +56,6 @@ in
       pkgs.haskellPackages.cabal2nix
       pkgs.haskellPackages.ghc
 
-      # I'm using a globally installed stack for emacs (would be better to take
-      # it from the local nix env..)
-      pkgs.haskellPackages.stack
 
       pythonWithPackages
 

@@ -102,6 +102,17 @@
 (yas-global-mode 1)
 
 
+;; --------------------------------------------------------------------------------
+;; Company completion
+
+;; Company mode provides multiple backends. One of them is company-capf, which uses the emacs
+;; built-in completion-at-point-functions. LSP-mode also exposes it's completion via capf. For
+;; instance within a python buffer completion-at-point-functions is set to (lsp-completion-at-point
+;; python-completion-at-point t).
+
+(require 'company)
+(define-key company-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+
 
 
 ;; --------------------------------------------------------------------------------

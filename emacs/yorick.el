@@ -35,4 +35,5 @@
 (load "~/dotfiles/emacs/haskell.el")
 (load "~/dotfiles/emacs/python.el")
 (load "~/dotfiles/emacs/sql.el")
+(load "~/dotfiles/emacs/1password.el")
 (load "~/dotfiles/emacs/direnv.el")  ;; Should be done last, then hooks are added in front of others

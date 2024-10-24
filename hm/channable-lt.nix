@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, pkgs-unstable, inputs, ... }:
 
 let
 
@@ -57,6 +57,7 @@ in
       pkgs.haskellPackages.cabal2nix
       pkgs.haskellPackages.ghc
 
+      pkgs-unstable.ghciwatch
 
       pythonWithPackages
 

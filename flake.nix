@@ -3,6 +3,8 @@
     # nixpkgs.url = "flake:nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "flake:nixpkgs/nixos-23.11";
 
+    nixpkgs-unstable.url = "flake:nixpkgs/nixpkgs-unstable";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
@@ -27,10 +29,11 @@
       inputs.flake-utils.follows = "flake-utils";
     };
   };
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
 
       # I don't want to include work stuff in this repo, so we expose a function that constructs
       # the home manager configuration if you pass it a list of additional modules that you want
@@ -45,6 +48,7 @@
           inherit inputs;
           # The dotfiles argument always points to the flake root.
           dotfiles = self;
+          inherit pkgs-unstable;
         };
         modules = [ ./hm/channable-lt.nix ] ++ extraModules;
       };

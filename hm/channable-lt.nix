@@ -44,6 +44,7 @@ in
       pkgs.libreoffice
       pkgs.light  # For easy brightness adjustment
       pkgs.chromium
+      pkgs._1password
 
       pkgs.nix-output-monitor  # Use nom instead of nix to get a nicer output
 

@@ -5,8 +5,44 @@
 (setq sql-postgres-login-params
       '((user :default "yorick")
         (database :default "yorick")
-        password
-        server))
+        ))
+
+(cl-defun simple-postgres-connect (user password host port database &key bufname ssh)
+  "This is typically used in some scratch.sql. At the top of the
+file an elisp snippet is included, which we evaluate manually
+with `eval-last-sexp`:
+
+    (simple-postgres-connect \"user\" \"pass\" \"localhost\" 5432 \"mydatabase\")
+
+For production stuff, I might retrieve the password from
+1password, tunnel via SSH, and provide a clear buffer name:
+
+    (simple-postgres-connect
+      \"danger_user\"
+      (op-signin-and-get \"Postgres\" \"prod.app_password\")
+      \"localhost\"
+      5432
+      \"mydatabase\"
+      :ssh \"yorick@vpn.business.com\"
+      :bufname \"mydatabase PROD\"
+      )"
+  (let* (
+         (via (cond ((s-equals? ssh "yorick_channable_com@dash.vpn.channable.com") " via dash")
+                    ((s-equals? ssh "yorick_channable_com@bobbytables.vpn.channable.com") " via bobbytables")
+                    (ssh (format " via %s" ssh))
+                    (t "")
+                    )
+              )
+         (bufname (or bufname (format "%s/%s%s" user database via)))
+         ;; Best way to use passwords with postgres is to include them in the connection string. In
+         ;; particular, it doesn't work to just set sql-password.
+         (sql-database (format "postgresql://%s:%s@%s:%s/%s" user password host port database))
+         ;; Clear login params, to prevent sql-product-interactive from asking for them
+         (sql-postgres-login-params '())
+         (default-directory (if ssh (format "/ssh:%s:" ssh) default-directory))
+         )
+    (sql-postgres bufname)))
+
 
 (defun sql-start-session (connection &optional dont-pop-to-buffer)
   "Open connection in a buffer called *SQL: my-connection*."
@@ -131,14 +167,3 @@ environment variable)."
                                    process-environment)))
     (sql-comint-postgres product options buf-name)))
 (sql-set-product-feature 'postgres :sqli-comint-func 'my-sql-comint-postgres)
-
-(defun configure-sql-connections ()
-  "Call this after adding your connections to `sql-connection-alist'."
-  (--each sql-connection-alist
-    (add-to-list 'purpose-user-name-purposes
-                 (cons (concat "*SQL: " (symbol-name (car it)) "*") 'repl))
-    (add-to-list 'markdown-code-lang-modes
-                 (cons (concat "sql-" (symbol-name (car it))) 'sql-mode))
-    )
-  (purpose-compile-user-configuration)
-  )

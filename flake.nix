@@ -1,18 +1,16 @@
 {
   inputs = {
-    # nixpkgs.url = "flake:nixpkgs/nixpkgs-unstable";
-    nixpkgs.url = "flake:nixpkgs/nixos-23.11";
-
+    nixpkgs.url = "flake:nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "flake:nixpkgs/nixpkgs-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       # url = "github:nix-community/home-manager";
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
 
       # Follow existing nixpkgs for better caching. This can break things if your
-      # versions don't match! In our case we use version 23.11 for both home
+      # versions don't match! In our case we use version 24.05 for both home
       # manager and nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -23,11 +21,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
+    # Use this one for bleeding-edge versions of emacs, as well as the emacs packages.
+    # emacs-overlay = {
+    #   url = "github:nix-community/emacs-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.flake-utils.follows = "flake-utils";
+    # };
   };
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
     let

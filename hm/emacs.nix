@@ -6,7 +6,9 @@
 # there. See README.md for further details.
 
 let
-  emacsPackage = pkgs.emacs28NativeComp;
+  # Emacs29 comes with nixpkgs. For newer versions we could use emacs-unstable from the emacs
+  # overlay https://github.com/nix-community/emacs-overlay
+  emacsPackage = pkgs.emacs29;
 in {
 
   # services.emacs = {

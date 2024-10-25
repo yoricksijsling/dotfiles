@@ -1,62 +1,22 @@
 
-
 ;; --------------------------------------------------------------------------------
-;; LSP using jedi language server
+;; LSP using basedpyright + ruff
 
-;; Uses 'jedi-language-server' command by default
-
-(require 'lsp-jedi)
-
+;; Must set this before require'ing lsp-pyright, otherwise it registers a wrong dependency
+(setq-default lsp-pyright-langserver-command "basedpyright")
+(require 'lsp-pyright)  ;; Will get required via lsp-mode
 (add-hook 'python-mode-hook 'lsp)
 
-(add-to-list 'lsp-disabled-clients 'pyls)
-;; (add-to-list 'lsp-enabled-clients 'jedi)  ;; By default all clients are considered enabled, so keep this at nil
+;; When we follow definitions into certain directories, we want LSP to know that this is a library,
+;; and it shouldn't nag us about importing the project root.
+(let ((client (gethash 'pyright lsp-clients)))
+   (setf (lsp--client-library-folders-fn client)
+         (lambda (_workspace) (list "/usr" "/nix/store"))))
 
-;; Jedi can give us diagnostics about syntax errors, these are reported through
-;; the lsp-diagnostics minor mode
-(setq lsp-jedi-diagnostics-enable t)
-(setq lsp-jedi-diagnostics-did-open t)
-(setq lsp-jedi-diagnostics-did-save t)
-
-;; Don't use a global python3, because direnv may set one locally for the project. By setting this
-;; lambda, the python3 executable will be determined when the jedi-language-server starts. This will
-;; ensure that the right python executable will be used, including all the python dependencies.
-(lsp-register-custom-settings '(("jedi.workspace.environmentPath" (lambda () (executable-find "python3")) t)))
-
-
-;; We can get lsp-diagnostics to communicate diagnostics on change (without
-;; saving), but only when idle-change is in the
-;; flycheck-check-syntax-automatically list.
-(setq lsp-jedi-diagnostics-did-change t)
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-to-list (make-local-variable 'flycheck-check-syntax-automatically)
-                         'idle-change)))
-
-;; Replace the 'python3' command for these checkers with the 'python3' from
-;; virtualenv, so that it still works if the checker runs after we left the
-;; buffer.
-;; (add-hook 'pyvenv-post-activate-hooks
-;;           (lambda ()
-;;             (let ((python3 (executable-find "python3")))
-;;               ;; (message "setting python3 executable in hook %s" python3)
-;;               (flycheck-set-checker-executable 'python-pylint python)
-;;               (flycheck-set-checker-executable 'python-mypy python)
-;;               )))
-
-
-
-;; --------------------------------------------------------------------------------
-;; Mypy checker in flycheck
-
-(require 'flycheck)
-
-;; Run mypy when jedi did not give errors. The mypy checker only runs when the
-;; buffer contains no modifications.
-;; Lsp checker only exists after we start lsp mode.
-(add-hook 'lsp-mode-hook
-          (lambda ()
-            (flycheck-add-next-checker 'lsp '(warning . python-mypy))))
+;; lsp-ruff is included by default as well. We can use it for formatting.
+;; At the moment, a `ruff` version is provided in our nix direnv, but we want a newer version for
+;; LSP so let's grab the most recent one:
+(setq-default lsp-ruff-server-command '("nix" "run" "nixpkgs#ruff" "--" "server"))
 
 
 ;; --------------------------------------------------------------------------------

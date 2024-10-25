@@ -68,7 +68,6 @@ in {
         ivy-purpose
         keychain-environment
         let-alist
-        lsp-jedi
         lsp-mode
         magit
         magit-popup

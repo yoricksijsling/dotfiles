@@ -19,7 +19,6 @@ let
   # python = pkgs.python311.override { packageOverrides = pythonOverlay; };
   python = pkgs.python3;
   pythonWithPackages = python.withPackages (ps: [
-    ps.jedi-language-server  # Used in emacs with lsp
     ps.numpy  # Used by google cloud
   ]);
 in
@@ -58,6 +57,9 @@ in
       pkgs.haskellPackages.ghc
 
       pkgs-unstable.ghciwatch
+
+      # Not available in nixos-24.05. And makes sense to keep this bleeding-edge for now.
+      pkgs-unstable.basedpyright
 
       pythonWithPackages
 

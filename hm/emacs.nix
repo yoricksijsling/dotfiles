@@ -30,6 +30,15 @@ in {
     emacs = {
       enable = true;
       package = emacsPackage;
+      overrides = (self: super: rec {
+        # By default, we get fairly recent packages through our emacs-overlay. If a package is
+        # broken we may want to use a more stable source. Check 'load-path' variable for currently
+        # used versions.
+
+        # I was getting some errors in magit, because it couldn't use a variable that was removed in
+        # git-commit. Drop it back to an older version:
+        git-commit = self.melpaStablePackages.git-commit;
+      });
       extraPackages = (epkgs: with epkgs; [
         async
         auto-highlight-symbol

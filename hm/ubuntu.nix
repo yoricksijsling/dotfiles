@@ -125,5 +125,5 @@ notify_when_long_running_commands_finish_install
 
   };
 
-  # nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+  nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 }

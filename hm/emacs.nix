@@ -69,6 +69,7 @@ in {
         keychain-environment
         let-alist
         lsp-mode
+        lsp-pyright  # Also used for basedpyright
         magit
         magit-popup
         markdown-mode

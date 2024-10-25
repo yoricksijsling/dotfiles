@@ -7,16 +7,31 @@
 (require 'lsp-pyright)  ;; Will get required via lsp-mode
 (add-hook 'python-mode-hook 'lsp)
 
-;; When we follow definitions into certain directories, we want LSP to know that this is a library,
-;; and it shouldn't nag us about importing the project root.
 (let ((client (gethash 'pyright lsp-clients)))
+   ;; When we follow definitions into certain directories, we want LSP to know that this is a library,
+   ;; and it shouldn't nag us about importing the project root.
    (setf (lsp--client-library-folders-fn client)
-         (lambda (_workspace) (list "/usr" "/nix/store"))))
+         (lambda (_workspace) (list "/usr" "/nix/store")))
+
+   ;; Pyright seems to support multi-root just fine, we get an appropriate workspace/configuration
+   ;; request with an item like this:
+   ;;
+   ;;   {"scopeUri": "file:///mydir/", "section": "python"}
+   ;;
+   ;; In lsp-mode, lsp--build-workspace-configuration-response is used to determine a response, but
+   ;; it doesn't use the scopeUri. So we always respond with the same pythonPath, while we should
+   ;; decide that based on the scopeUri. As long as we don't do multi-root, lsp-mode+lsp-pyright
+   ;; uses the direnv-provided python3 (including library dependencies) for the workspace.
+   (setf (lsp--client-multi-root client) nil)
+   )
 
 ;; lsp-ruff is included by default as well. We can use it for formatting.
 ;; At the moment, a `ruff` version is provided in our nix direnv, but we want a newer version for
 ;; LSP so let's grab the most recent one:
 (setq-default lsp-ruff-server-command '("nix" "run" "nixpkgs#ruff" "--" "server"))
+;; (add-to-list 'lsp-disabled-clients 'ruff)
+
+
 
 
 ;; --------------------------------------------------------------------------------

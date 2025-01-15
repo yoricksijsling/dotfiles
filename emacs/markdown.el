@@ -2,7 +2,7 @@
 ;;--------------------------------------------------------------------------------
 ;; Markdown
 
-;; Toggle tree visibility with TAB
+;; Toggle tree visibility with TAB (see my-tab-behavior)
 ;; Navigate between headers with C-c C-p and C-c C-n
 
 (require 'markdown-mode)
@@ -13,6 +13,7 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode)) ;; github-flavoured-markdown
 (add-hook 'gfm-mode-hook 'variable-pitch-mode) ;; Proportional font
 (define-key markdown-mode-map (kbd "C-c C-r") 'markdown-sql-send)
+;; TAB key is overwritten by my-tab-behavior
 
 ;; Headers
 (setq markdown-header-scaling t)

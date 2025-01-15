@@ -119,8 +119,26 @@
 ;; python-completion-at-point t).
 
 (require 'company)
-(define-key company-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+;; TAB binding is done via the central logic in my-tab-behavior, rather than adjusting
+;; company-mode-map.
 
+
+;; --------------------------------------------------------------------------------
+;; TAB behavior
+
+(defun my-tab-behavior (&optional arg)
+  (interactive "P")
+  (cond
+   ;; In markdown-mode or gfm-mode (both major modes), we want the default markdown-cycle. It
+   ;; cycles through outline, or cells in tables, or falls back on indent-for-tab-command.
+   ((derived-mode-p 'markdown-mode) (markdown-cycle arg))
+   ;; Whenever company-mode is available as a minor mode (but not in markdown mode), use their tab
+   ;; completion. This function also falls back on indent-for-tab-command.
+   (company-mode (company-indent-or-complete-common arg))
+   ;; In other cases, use the default tab behavior
+   (t (indent-for-tab-command arg))
+   ))
+(keymap-set global-map "TAB" 'my-tab-behavior)
 
 
 ;; --------------------------------------------------------------------------------

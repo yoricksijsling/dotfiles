@@ -27,6 +27,7 @@
 (show-paren-mode 1)                 ;; Highlight matching parentheses
 (setq split-height-threshold 30)
 (setq split-width-threshold 100)
+(setq create-lockfiles nil)  ;; Don't create .#foo files
 
 ;; Truncate lines instead of wrapping
 (set-default 'truncate-lines t)

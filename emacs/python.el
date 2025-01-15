@@ -6,6 +6,7 @@
 (setq-default lsp-pyright-langserver-command "basedpyright")
 (require 'lsp-pyright)  ;; Will get required via lsp-mode
 (add-hook 'python-mode-hook 'lsp)
+(add-hook 'python-mode-hook 'lsp-enable-which-key-integration)
 
 (let ((client (gethash 'pyright lsp-clients)))
    ;; When we follow definitions into certain directories, we want LSP to know that this is a library,

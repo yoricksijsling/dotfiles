@@ -19,6 +19,10 @@
 ;; Server for editing from command line
 (server-start)
 
+;; I need this on some servers, to prevent errors like '/bin/sh: 3: env: not found'. If this causes
+;; problems, use some connection local thing instead.
+(require 'tramp)
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 ;; --------------------------------------------------------------------------------
 ;; Poor mans DPI change

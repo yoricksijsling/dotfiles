@@ -2,7 +2,7 @@
 
 {
   # This git configuration is put under `.config/git/config`, but
-  # it still reads `.gitconfig` as well. T
+  # it still reads `.gitconfig` as well.
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -18,6 +18,8 @@
       diff.algorithm = "histogram";
       # Try to break up diffs at blank lines
       diff.compactionHeuristic = true;
+      diff.mnemonicPrefix = true;
+
       # Include tags with commits that we push
       push.followTags = true;
       # Sort tags in version order, e.g. `v1 v2 .. v9 v10` instead
@@ -26,12 +28,18 @@
       # For interactive rebases, automatically reorder and set the
       # right actions for !fixup and !squash commits.
       rebase.autosquash = true;
+      rebase.updateRefs = true;
 
       # Remeber conflict resolutions. If the same conflict appears
       # again, use the previous resolution.
       rerere.enabled = true;
       # Stage solved conflicts automatically
       # rerere.autoupdate = true
+
+      #
+      fetch.prune = true;
+      fetch.pruneTags = true;
+      fetch.all = true;
     };
   };
 

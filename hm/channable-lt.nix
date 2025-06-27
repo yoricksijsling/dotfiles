@@ -44,6 +44,7 @@ in
       pkgs.light  # For easy brightness adjustment
       pkgs.chromium
       pkgs._1password
+      pkgs.pwvucontrol  # Controlling pipewire audio, similar to pavucontrol
 
       pkgs.nix-output-monitor  # Use nom instead of nix to get a nicer output
 

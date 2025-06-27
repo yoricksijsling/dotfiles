@@ -6,9 +6,10 @@
 # there. See README.md for further details.
 
 let
-  # Emacs29 comes with nixpkgs. For newer versions we could use emacs-unstable from the emacs
-  # overlay https://github.com/nix-community/emacs-overlay
-  emacsPackage = pkgs.emacs29;
+  # Emacs 30 comes with current nixpkgs (25.05). For newer versions we could use
+  # emacs-unstable from the emacs overlay
+  # https://github.com/nix-community/emacs-overlay
+  emacsPackage = pkgs.emacs30;
 in {
 
   # services.emacs = {
@@ -34,10 +35,8 @@ in {
         # By default, we get fairly recent packages through our emacs-overlay. If a package is
         # broken we may want to use a more stable source. Check 'load-path' variable for currently
         # used versions.
-
-        # I was getting some errors in magit, because it couldn't use a variable that was removed in
-        # git-commit. Drop it back to an older version:
-        git-commit = self.melpaStablePackages.git-commit;
+        # Example:
+        # git-commit = self.melpaStablePackages.git-commit;
       });
       extraPackages = (epkgs: with epkgs; [
         async
@@ -47,15 +46,12 @@ in {
         counsel
         counsel-projectile
         dash
-        ein
-        elpy
         envrc
         epl
         f
         find-file-in-project
         flycheck
         ghub
-        git-commit
         github-browse-file
         gnu-elpa-keyring-update
         handlebars-mode

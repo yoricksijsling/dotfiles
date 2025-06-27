@@ -115,11 +115,19 @@
 ;; indidividual modes and that seems to work a bit better.
 ;; (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
 
+;; Log messages to *lsp-log* buffer
+(setq lsp-log-io t)
+
 (keymap-set global-map "s-g" 'maybe-start-lsp)
 (defun maybe-start-lsp ()
   (interactive)
   (when (not lsp-mode) (lsp)))
 ;; (keymap-unset global-map "s-g")
+
+
+;; lsp-doctor tells us to increase read-process-output-max and gc-cons-threshold
+(setq read-process-output-max (* 1024 1024)) ;; 1mb, default is 4k
+(setq gc-cons-threshold (* 100 1000 1000))  ;; 100m, default is 800k
 
 
 
@@ -130,6 +138,27 @@
 
 (require 'yasnippet)  ;; Necessary to make the placeholders in lsp company autocompletions work
 (yas-global-mode 1)
+
+;; Emacs-lsp-booster for async IO with any lsp
+;; https://github.com/blahgeek/emacs-lsp-booster
+(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+  "Prepend emacs-lsp-booster command to lsp CMD."
+  (let ((orig-result (funcall old-fn cmd test?)))
+    (if (and (not test?)                             ;; for check lsp-server-present?
+             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+             ;; I'm skipping the LSP_USE_PLISTS and native json-rpc checks, just so we can test
+             ;; lsp-use-plists
+             ;; (not (functionp 'json-rpc-connection))  ;; native json-rpc
+             (executable-find "emacs-lsp-booster"))
+        (progn
+          (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+            (setcar orig-result command-from-exec-path))
+          (message "Using emacs-lsp-booster for %s!" orig-result)
+          ;; (cons "emacs-lsp-booster" orig-result))
+          (cons "emacs-lsp-booster" (cons "--disable-bytecode" (cons "--" orig-result))))
+      orig-result)))
+(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+;; (advice-remove 'lsp-resolve-final-command #'lsp-booster--advice-final-command)
 
 
 ;; --------------------------------------------------------------------------------

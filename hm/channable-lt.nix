@@ -47,6 +47,10 @@ in
 
       pkgs.nix-output-monitor  # Use nom instead of nix to get a nicer output
 
+      # Wrap LSPs with this to get async communication
+      # https://github.com/blahgeek/emacs-lsp-booster
+      pkgs.emacs-lsp-booster
+
       # pkgs.haskellPackages.ghcid
       pkgs.haskellPackages.hlint
       # pkgs.haskellPackages.profiteur

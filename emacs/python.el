@@ -7,6 +7,14 @@
 (require 'lsp-pyright)  ;; Will get required via lsp-mode
 (add-hook 'python-mode-hook 'lsp)
 (add-hook 'python-mode-hook 'lsp-enable-which-key-integration)
+;; This seems to slow down sometimes, due to excessive length of which-key-replacement-alist
+;; For python-mode, this should have length 51, but sometimes it's more than 7000:
+;;   (length (cdr-safe (assoc 'python-mode which-key-replacement-alist)))
+;;   (length (cdr-safe (assoc 'haskell-mode which-key-replacement-alist)))
+;;
+;; Reset:
+;; (setf (cdr (assoc 'python-mode which-key-replacement-alist)) (-distinct (cdr (assoc 'python-mode which-key-replacement-alist))))
+;; (setf (cdr (assoc 'haskell-mode which-key-replacement-alist)) (-distinct (cdr (assoc 'haskell-mode which-key-replacement-alist))))
 
 (let ((client (gethash 'pyright lsp-clients)))
    ;; When we follow definitions into certain directories, we want LSP to know that this is a library,

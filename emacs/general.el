@@ -13,9 +13,6 @@
 ;; Smaller steps for text-scale-adjust
 (setq-default text-scale-mode-step 1.04)
 
-;; Flycheck only check on save and mode-enabled (not on new-line or idle-change)
-(setq flycheck-check-syntax-automatically '(mode-enabled save))
-
 ;; Server for editing from command line
 (server-start)
 
@@ -87,6 +84,24 @@
 (require 'which-key)
 (setq which-key-idle-delay 0.1)
 (which-key-mode)
+
+
+;; --------------------------------------------------------------------------------
+;; Flycheck
+
+;; Flycheck only check on save and mode-enabled (not on new-line or idle-change)
+(setq flycheck-check-syntax-automatically '(mode-enabled save))
+
+;; Disable the 'flycheck error messages' popup, if we're already showing the error list
+;; (setq flycheck-display-errors-function
+;;       #'flycheck-display-error-messages-unless-error-list)
+(setq flycheck-display-errors-function nil)
+
+(setq flycheck-navigation-minimum-level 'warning)
+
+;; (advice-add 'flycheck-error-list-goto-error :after #'my-adjust-haskell-session-target)
+;; (setq next-error-last-buffer nil)
+;; (next-error-select-buffer
 
 
 ;; --------------------------------------------------------------------------------

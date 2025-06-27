@@ -93,12 +93,19 @@
 ;; LSP
 
 ;; Keybindings: https://emacs-lsp.github.io/lsp-mode/page/keybindings/
-(setq lsp-keymap-prefix "C-c l")  ;; Default is "s-l" but that's my screen lock
+(setq lsp-keymap-prefix "s-g")  ;; Default is "s-l" but that's my screen lock
 (require 'lsp-mode)
 ;; I used the below to enable which-key integration everywhere, but it makes many things super
 ;; slow. Terrible combination with a tiny which-key-idle-delay. Instead we enable it for some
 ;; indidividual modes and that seems to work a bit better.
 ;; (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+
+(keymap-set global-map "s-g" 'maybe-start-lsp)
+(defun maybe-start-lsp ()
+  (interactive)
+  (when (not lsp-mode) (lsp)))
+;; (keymap-unset global-map "s-g")
+
 
 
 ;; More optional stuff

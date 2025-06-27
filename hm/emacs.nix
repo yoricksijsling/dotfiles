@@ -70,6 +70,7 @@ in {
         let-alist
         lsp-mode
         lsp-pyright  # Also used for basedpyright
+        lsp-haskell
         magit
         magit-popup
         markdown-mode

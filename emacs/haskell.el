@@ -6,6 +6,51 @@
 (require 'haskell)   ;; Custom version, see init.el
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
+(require 'lsp-haskell)
+
+;; By default, lsp-haskell will try to use haskell-language-server-wrapper. That one can figure out
+;; which haskell-language-server to use, when you use ghcup. In our projects,
+;; haskell-language-server is provided by the nix environment, so we'll want to use that instead.
+(setq lsp-haskell-server-path "haskell-language-server")
+;; (add-hook 'haskell-mode-hook #'lsp)
+;; (remove-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-mode-hook 'lsp-enable-which-key-integration)
+
+;; Not sure why, but it looks like lsp gets started before the envrc--update.  In *lsp-log* I had
+;; the error 'Command "haskell-language-server --lsp -l /tmp/hls.log" is not present on the
+;; path'. And in *Messages* I had 'LSP :: The following servers support current file but do not have
+;; automatic installation: lsp-haskell'.
+(setq lsp-haskell-server-wrapper-function
+      (lambda (orig)
+        (envrc--update)
+        orig
+        ))
+
+
+;; Fourmolu from HLS
+;; To actually enable this, you'll want these in .dir-locals.el:
+;;    ((haskell-mode . ((lsp-haskell-formatting-provider . "fourmolu")
+;;                      (lsp-haskell-plugin-fourmolu-config-external . t)
+;;                      )))
+(add-to-list 'lsp--formatting-indent-alist
+             '(haskell-mode . haskell-indentation-layout-offset)
+             )
+(setq lsp-haskell-plugin-fourmolu-config-path
+      (lambda () (if lsp-haskell-plugin-fourmolu-config-external
+                     (executable-find "fourmolu")
+                   "fourmolu")))
+
+
+;; This overwrites the original haskell-mode-jump-to-tag. It's a simplification so that it doesn't
+;; try to use TAGS. The M-. key is bound to haskell-mode-jump-to-def-or-tag, which first tries to
+;; find definition in the current haskell session, and otherwise calls to the function below.
+(defun haskell-mode-jump-to-tag (&optional next-p)
+  "Jump to the tag of the given identifier."
+  (interactive "P")
+  (let ((xref-prompt-for-identifier nil))
+    (call-interactively 'xref-find-definitions)))
+
 (require 'company)
 (add-hook 'haskell-mode-hook 'company-mode)
 
@@ -38,6 +83,8 @@
         ;; "--bench" "--test" ;; Include load paths for testing and benchmark packages
         ;; Default included no-build, but i want to build all my stuff
         ;; "--repl-no-load"  ;; Don't load modules initially, just wait for user
+        ;; Override any -Werror options that may have been set in a cabal file.
+        "--ghc-option=-Wwarn"
         ))
 (setq haskell-interactive-popup-errors nil)
 ;; If the build is broken, I don't want it to keep asking for restarts

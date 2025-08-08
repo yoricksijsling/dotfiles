@@ -60,7 +60,7 @@
 (cl-defun op-item-get (item &key fields vault account session)
   (with-temp-buffer
     (let* ((args (append
-                  (list "item" "get" item)
+                  (list "item" "get" item "--reveal")
                   (when fields (list "--fields" fields))
                   (when vault (list "--vault" vault))
                   (when account (list "--account" account))

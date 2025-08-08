@@ -21,6 +21,7 @@
 
 (setq lsp-eldoc-hook nil)  ;; documentation shown in the minibuffer
 
+(add-hook 'rustic-mode-hook 'lsp-enable-which-key-integration)
 
 ;;--------------------------------------------------------------------------------
 ;; XML

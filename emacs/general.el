@@ -704,7 +704,7 @@ _q_uit                         _t_: Show subtree
       (hs-hide-level level)
       (setq this-command 'hs-hide-level))))
 
-(global-set-key (kbd "C-S-<tab>") 'hs-cycle)
+(global-set-key (kbd "C-S-<tab>") 'hs-global-cycle)
 (defun hs-global-cycle ()
     (interactive)
     (pcase last-command

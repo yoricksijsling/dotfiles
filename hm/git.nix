@@ -12,7 +12,7 @@
 
       core.excludesfile = "${config.home.homeDirectory}/.gitignore_global";
 
-      merge.conflictstyle = "diff3";
+      merge.conflictstyle = "zdiff3";
       # Prevent bad objects from spreading.
       transfer.fsckObjects = true;
       diff.algorithm = "histogram";

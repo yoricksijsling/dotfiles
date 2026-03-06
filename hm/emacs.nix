@@ -54,6 +54,7 @@ in {
         ghub
         github-browse-file
         gnu-elpa-keyring-update
+        gptel
         handlebars-mode
         handlebars-sgml-mode
         haskell-mode

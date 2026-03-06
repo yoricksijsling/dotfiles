@@ -78,6 +78,7 @@ in {
         popup
         powerline
         projectile
+        rg
         rich-minority
         rustic
         s

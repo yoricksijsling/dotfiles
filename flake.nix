@@ -1,13 +1,13 @@
 {
   inputs = {
-    nixpkgs.url = "flake:nixpkgs/nixos-25.05";
+    nixpkgs.url = "flake:nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "flake:nixpkgs/nixpkgs-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       # url = "github:nix-community/home-manager";
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
 
       # Follow existing nixpkgs for better caching. This can break things if your
       # versions don't match! In our case we use version 24.05 for both home

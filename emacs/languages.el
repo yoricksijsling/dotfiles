@@ -71,6 +71,15 @@
           (lambda ()
             (setq-local tab-width 4)))
 (add-to-list 'ahs-modes 'web-mode)
+(add-hook 'web-mode-hook 'lsp-enable-which-key-integration)
+
+(defun lsp-php-get-composer-dir ()
+  "Get composer home directory if possible."
+  (if (executable-find "composer")
+      ;; (replace-regexp-in-string "\n$" "" (shell-command-to-string "composer config --global home"))
+      (let ((cmd (s-join " " (list (executable-find "composer") "config" "--global" "home"))))
+        (replace-regexp-in-string "\n$" "" (shell-command-to-string cmd)))
+    "~/.composer"))
 
 ;; Other options:
 ;; js, jsx, css, scss, xml

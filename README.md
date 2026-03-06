@@ -46,7 +46,7 @@ This dotfiles repo is a flake that exposes a default home-manager configuration:
 
 ```bash
 cd ~/dotfiles
-nix flake update .
+nix flake update --flake .
 home-manager build --flake .#default
 home-manager switch --flake .#default
 ```

@@ -134,13 +134,34 @@
 ;; lsp-doctor tells us to increase read-process-output-max and gc-cons-threshold
 (setq read-process-output-max (* 1024 1024)) ;; 1mb, default is 4k
 (setq gc-cons-threshold (* 100 1000 1000))  ;; 100m, default is 800k
-
+(setq lsp-file-watch-threshold 5000)
 
 
 ;; More optional stuff
 ;;   lsp-ui
 ;;   lsp-ivy
 ;;   dap-mode
+
+;; (markdown-update-header-faces nil markdown-header-scaling-values)
+;; (setq markdown-fontify-code-blocks-natively nil)
+;; (remove-hook 'gfm-mode-hook 'variable-pitch-mode)
+(setq lsp-ui-sideline-show-code-actions t)
+(setq lsp-modeline-code-actions-enable nil)
+(setq lsp-ui-doc-show-with-cursor t)
+(setq lsp-ui-doc-show-with-mouse nil)
+(setq lsp-ui-doc-max-height 10)
+(setq lsp-ui-doc-header t)
+(setq lsp-ui-doc-include-signature t)
+(setq lsp-ui-doc-border "deep sky blue")
+(setq lsp-ui-doc-enhanced-markdown nil)
+(setq lsp-ui-doc-text-scale-level (- 1))
+(setq lsp-ui-doc-delay 1.0)
+(add-hook 'lsp-help-mode-hook
+        #'(lambda ()
+            (face-remap-add-relative 'default :background "azure")))
+
+
+(require 'lsp-ivy)
 
 (require 'yasnippet)  ;; Necessary to make the placeholders in lsp company autocompletions work
 (yas-global-mode 1)
@@ -165,6 +186,28 @@
       orig-result)))
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 ;; (advice-remove 'lsp-resolve-final-command #'lsp-booster--advice-final-command)
+
+
+;; This function is used when we click on links in our LSP help pages.
+;; Compared to the original function, we added a is-html guard. This is so that
+;; file://...html links get opened by the browser, and not within emacs.
+(defun lsp--document-link-handle-target (url)
+  (let* ((parsed-url (url-generic-parse-url (url-unhex-string url)))
+         (type (url-type parsed-url))
+         (is-html (s-ends-with? ".html" (url-filename parsed-url)))
+         )
+    (pcase type
+      ((and "file" (guard (not is-html)))
+       (xref-push-marker-stack)
+       (find-file (lsp--uri-to-path url))
+       (-when-let ((_ line column) (s-match (rx "#" (group (1+ num)) (or "," "#") (group (1+ num))) url))
+         (goto-char (lsp--position-to-point
+                     (lsp-make-position :character (1- (string-to-number column))
+                                        :line (1- (string-to-number line)))))))
+      ((or "file" "http" "https") (browse-url url))
+      (type (if-let ((handler (lsp--get-uri-handler type)))
+                (funcall handler url)
+              (signal 'lsp-file-scheme-not-supported (list url)))))))
 
 
 ;; --------------------------------------------------------------------------------

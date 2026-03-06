@@ -64,9 +64,11 @@ in {
         ivy-purpose
         keychain-environment
         let-alist
+        lsp-ivy
         lsp-mode
         lsp-pyright  # Also used for basedpyright
         lsp-haskell
+        lsp-ui
         magit
         magit-popup
         markdown-mode

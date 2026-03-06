@@ -63,6 +63,8 @@ in
 
       pkgs-unstable.ghciwatch
 
+      pkgs-unstable.rust-analyzer
+
       # Not available in nixos-24.05. And makes sense to keep this bleeding-edge for now.
       pkgs-unstable.basedpyright
 

@@ -16,6 +16,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "#222" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
  '(fixed-pitch ((t (:family "Ubuntu Mono"))))
+ '(lsp-ui-doc-background ((t (:background "azure"))))
  '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "gray50"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
  '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "arial"))))
@@ -29,6 +30,14 @@
  '(shadow ((t (:foreground "gray60"))))
  '(variable-pitch ((t (:height 0.8 :family "Liberation Sans")))))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((lsp-haskell-plugin-fourmolu-config-external . t) (lsp-haskell-formatting-provider . "fourmolu")
+     (buffer-file-coding-system . utf-8-unix))))
 
 (load "~/dotfiles/emacs/languages.el")
 (load "~/dotfiles/emacs/markdown.el")

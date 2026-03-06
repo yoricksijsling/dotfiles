@@ -90,6 +90,7 @@ in {
         smart-mode-line
         smart-mode-line-powerline-theme
         swiper
+        typescript-mode
         virtualenvwrapper
         web-mode
         wgrep

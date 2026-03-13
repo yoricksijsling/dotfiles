@@ -238,6 +238,8 @@
    ;; In other cases, use the default tab behavior
    (t (indent-for-tab-command arg))
    ))
+
+;; NOTE: <tab> is the function key and TAB is the C-i character
 (keymap-set global-map "TAB" 'my-tab-behavior)
 
 

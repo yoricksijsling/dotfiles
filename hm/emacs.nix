@@ -43,6 +43,7 @@ in {
         auto-highlight-symbol
         buffer-move
         company
+        copilot
         counsel
         counsel-projectile
         dash

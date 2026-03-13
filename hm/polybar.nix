@@ -54,9 +54,9 @@ module-margin-right = 1
 
 ; https://github.com/polybar/polybar/wiki/Fonts
 font-0 = Comic Sans MS:pixelsize=9;1
-font-1 = Font Awesome 6 Free Regular:pixelsize=10;1
-font-2 = Font Awesome 6 Brands Regular:pixelsize=10;1
-font-3 = Font Awesome 6 Free Solid :pixelsize=10;1
+font-1 = Font Awesome 7 Free Regular:pixelsize=10;1
+font-2 = Font Awesome 7 Brands Regular:pixelsize=10;1
+font-3 = Font Awesome 7 Free Solid :pixelsize=10;1
 
 ;tray-position = right
 ;tray-padding = 1

@@ -352,36 +352,6 @@ Similar interactive behaviour as `magit-log-current'."
 
 
 ;; --------------------------------------------------------------------------------
-;; Keep track of selected window and buffer
-
-(defvar my-selected-window nil
-  "Currently selected window as the user sees it.
-Changes when the user moves to another buffer or focuses another window.
-Does not change when using `with-temporary-buffer' or `with-selected-window'.
-   ")
-
-(defvar my-selected-window-changed-hook nil
-  "Hook called after `my-selected-window' has changed.")
-
-(setq my-selected-window/invalidated nil)
-(defun my-invalidate-selected-window ()
-  (setq my-selected-window/invalidated t))
-(defun my-refresh-selected-window ()
-  (when my-selected-window/invalidated
-    (setq my-selected-window/invalidated nil)
-    (let ((new-selected-window (selected-window)))
-      (when (not (eq new-selected-window my-selected-window))
-        ;; (message "Setting selected window to %s" (selected-window))
-        ;; (message nil)
-        (setq my-selected-window (selected-window))
-        (run-hooks 'my-selected-window-changed-hook)
-    ))))
-(add-hook 'buffer-list-update-hook 'my-invalidate-selected-window)
-(add-hook 'post-command-hook 'my-refresh-selected-window)
-(add-function :before pre-redisplay-function (lambda (_wins) (my-refresh-selected-window)))
-
-
-;; --------------------------------------------------------------------------------
 ;; Mode line
 
 (setq sml/theme 'light-powerline)

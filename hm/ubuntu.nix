@@ -35,6 +35,8 @@
       pkgs.font-awesome  # Used in polybar
       pkgs.liberation_ttf  # Times New Roman, Arial, and Courier New (as serif/sans/mono)
       pkgs.noto-fonts
+      pkgs.roboto-mono
+      pkgs.fira-code
     ];
 
     sessionVariables = {

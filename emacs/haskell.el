@@ -17,6 +17,9 @@
 ;; (remove-hook 'haskell-mode-hook #'lsp)
 (add-hook 'haskell-mode-hook 'lsp-enable-which-key-integration)
 
+;; Unbreak lsp rename: see https://github.com/emacs-lsp/lsp-haskell/issues/192#issuecomment-2597415138
+(setq lsp-rename-use-prepare nil)
+
 ;; Not sure why, but it looks like lsp gets started before the envrc--update.  In *lsp-log* I had
 ;; the error 'Command "haskell-language-server --lsp -l /tmp/hls.log" is not present on the
 ;; path'. And in *Messages* I had 'LSP :: The following servers support current file but do not have

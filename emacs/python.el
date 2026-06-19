@@ -5,7 +5,7 @@
 ;; Must set this before require'ing lsp-pyright, otherwise it registers a wrong dependency
 (setq-default lsp-pyright-langserver-command "basedpyright")
 (require 'lsp-pyright)  ;; Will get required via lsp-mode
-(add-hook 'python-mode-hook 'lsp)
+;; (add-hook 'python-mode-hook 'lsp)
 (add-hook 'python-mode-hook 'lsp-enable-which-key-integration)
 ;; This seems to slow down sometimes, due to excessive length of which-key-replacement-alist
 ;; For python-mode, this should have length 51, but sometimes it's more than 7000:

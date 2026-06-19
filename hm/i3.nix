@@ -312,8 +312,8 @@ xinput --set-prop 'DLL0945:00 04F3:311C Touchpad' 'libinput Natural Scrolling En
         bindsym --release Control+Shift+XF86Tools exec pkill ffmpeg
 
         # Brightness
-        bindsym --release XF86MonBrightnessUp exec light -T 2.0
-        bindsym --release XF86MonBrightnessDown exec light -T 0.5
+        bindsym --release XF86MonBrightnessUp exec brightnessctl --min-value=1 --exponent=4 set +7%
+        bindsym --release XF86MonBrightnessDown exec brightnessctl --min-value=1 --exponent=4 set 7%-
 
         # Add todo to todoist
         bindsym Mod4+t exec ${dotfiles}/scripts/todo.sh

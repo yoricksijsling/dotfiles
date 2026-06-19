@@ -41,7 +41,7 @@ in
       pkgs.gimp
       pkgs.pinta
       pkgs.libreoffice
-      pkgs.light  # For easy brightness adjustment
+      pkgs.brightnessctl
       pkgs.chromium
       pkgs._1password-cli
       pkgs.pwvucontrol  # Controlling pipewire audio, similar to pavucontrol

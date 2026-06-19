@@ -29,6 +29,7 @@
         markdown-electric-backquote
         markdown-outdent-or-delete
         markdown-shifttab
+        markdown-end-of-line
         my-eval-decl
         org-beginning-of-line
         org-end-of-line

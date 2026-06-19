@@ -364,6 +364,13 @@ Similar interactive behaviour as `magit-log-current'."
 
 
 ;; --------------------------------------------------------------------------------
+;; Unique buffer names
+
+(setq uniquify-buffer-name-style 'forward) ; Options: 'forward, 'post-forward, etc.
+(setq uniquify-strip-common-suffix nil)
+
+
+;; --------------------------------------------------------------------------------
 ;; Mode line
 
 (setq sml/theme 'light-powerline)

@@ -21,6 +21,10 @@
     #     ${pkgs.nixGL}/bin/nixGLIntel ${pkgs.firefox}/bin/firefox "$@"
     #   '';
 
+    # You are currently using the legacy default (`".mozilla/firefox"`) because `home.stateVersion` is less than "26.05".
+    # To adopt the new default behavior, set:
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
+
     profiles = {
       "${config.home.username}" = {
 

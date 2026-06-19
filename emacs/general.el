@@ -26,6 +26,13 @@
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)
+
+(use-package re-builder
+  :defer t
+  :init
+  (setq reb-re-syntax 'string)  ;; use simple syntax without all the escaping..
+  )
+
 ;; --------------------------------------------------------------------------------
 ;; Poor mans DPI change
 

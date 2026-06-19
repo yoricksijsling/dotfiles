@@ -137,8 +137,8 @@
 
 
 ;; lsp-doctor tells us to increase read-process-output-max and gc-cons-threshold
-(setq read-process-output-max (* 1024 1024)) ;; 1mb, default is 4k
-(setq gc-cons-threshold (* 100 1000 1000))  ;; 100m, default is 800k
+(setq read-process-output-max (* 4 1024 1024)) ;; 4MiB, default is 64KB
+(setq gc-cons-threshold (* 100 1000 1000))  ;; 100MB, default is 800K
 (setq lsp-file-watch-threshold 5000)
 
 

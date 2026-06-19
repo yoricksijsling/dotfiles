@@ -28,6 +28,9 @@
 (setq split-height-threshold 30)
 (setq split-width-threshold 100)
 (setq create-lockfiles nil)  ;; Don't create .#foo files
+(setq redisplay-skip-fontification-on-input t)  ;; Delay fontification when you're typing
+(setq save-interprogram-paste-before-kill 1000)
+(setq kill-do-not-save-duplicates t)
 
 ;; Truncate lines instead of wrapping
 (set-default 'truncate-lines t)

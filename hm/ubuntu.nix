@@ -31,6 +31,7 @@
 
       # Fonts. Check https://github.com/polybar/polybar/wiki/Fonts for font debugging
       pkgs.comic-relief  # Comic Sans MS
+      pkgs.comic-mono
       pkgs.dejavu_fonts
       pkgs.font-awesome  # Used in polybar
       pkgs.liberation_ttf  # Times New Roman, Arial, and Courier New (as serif/sans/mono)

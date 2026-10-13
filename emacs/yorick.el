@@ -14,12 +14,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "#222" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
- '(fixed-pitch ((t (:family "Ubuntu Mono"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "white" :foreground "#222" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 105 :width normal :foundry "NONE" :family "Comic Mono"))))
+ '(fixed-pitch ((t (:family "Comic Mono"))))
  '(lsp-ui-doc-background ((t (:background "azure"))))
  '(magit-diff-context-highlight ((t (:background "lemon chiffon" :foreground "gray50"))))
  '(markdown-code-face ((t (:inherit fixed-pitch))))
- '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "arial"))))
+ '(markdown-header-face ((t (:foreground "dark slate blue" :weight bold :family "Comic Relief"))))
  '(markdown-header-rule-face ((t (:inherit markdown-markup-face))))
  '(markdown-inline-code-face ((t (:inherit fixed-pitch))))
  '(markdown-language-keyword-face ((t (:inherit shadow))))
@@ -28,7 +28,7 @@
  '(markdown-url-face ((t (:inherit shadow))))
  '(region ((t (:background "navajo white" :distant-foreground "gtk_selection_fg_color"))))
  '(shadow ((t (:foreground "gray60"))))
- '(variable-pitch ((t (:height 0.8 :family "Liberation Sans")))))
+ '(variable-pitch ((t (:height 1.0 :family "Comic Relief")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

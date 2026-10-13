@@ -46,6 +46,8 @@ in
       pkgs._1password-cli
       pkgs.pwvucontrol  # Controlling pipewire audio, similar to pavucontrol
 
+      pkgs.github-copilot-cli
+
       pkgs.nix-output-monitor  # Use nom instead of nix to get a nicer output
 
       # Wrap LSPs with this to get async communication

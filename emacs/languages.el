@@ -54,6 +54,8 @@
 (require 'hideshow)
 (require 'js)
 
+(setq js-indent-level 2)
+
 ;; Hide/show
 (add-to-list 'hs-special-modes-alist
              '(js-mode "{" "}" "/[*/]" nil))
@@ -70,6 +72,7 @@
 (add-hook 'web-mode-hook
           (lambda ()
             (setq-local tab-width 4)))
+(setq web-mode-markup-indent-offset 2)
 (add-to-list 'ahs-modes 'web-mode)
 (add-hook 'web-mode-hook 'lsp-enable-which-key-integration)
 
